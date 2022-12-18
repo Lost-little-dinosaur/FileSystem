@@ -1,11 +1,11 @@
 #include "fs.h"
 
 void my_ls() {
-    // â‘  è°ƒç”¨ do_read()è¯»å‡ºå½“å‰ç›®å½•æ–‡ä»¶å†…å®¹åˆ°å†…å­˜ï¼›
-    // â‘¡ å°†è¯»å‡ºçš„ç›®å½•æ–‡ä»¶çš„ä¿¡æ¯æŒ‰ç…§ä¸€å®šçš„æ ¼å¼æ˜¾ç¤ºåˆ°å±å¹•ä¸Šï¼›
-    // â‘¢ è¿”å›ã€‚
+    // ¢Ù µ÷ÓÃ do_read()¶Á³öµ±Ç°Ä¿Â¼ÎÄ¼şÄÚÈİµ½ÄÚ´æ£»
+    // ¢Ú ½«¶Á³öµÄÄ¿Â¼ÎÄ¼şµÄĞÅÏ¢°´ÕÕÒ»¶¨µÄ¸ñÊ½ÏÔÊ¾µ½ÆÁÄ»ÉÏ£»
+    // ¢Û ·µ»Ø¡£
     if (openfilelist[currfd].metadata == 1) {
-        printf("åœ¨æ•°æ®æ–‡ä»¶é‡Œä¸èƒ½ä½¿ç”¨ ls\n");
+        printf("ÔÚÊı¾İÎÄ¼şÀï²»ÄÜÊ¹ÓÃ ls\n");
         return;
     }
     char buf[MAX_TEXT_SIZE];
@@ -16,9 +16,9 @@ void my_ls() {
     for (int i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb));
          i++) {
         if (fcbPtr->free == 1) {
-            //ç›®å½•æ–‡ä»¶
-            //åŒç†,å¹´ä»½å  7 ä½,æœˆä»½å  4 ä½,æ—¥æœŸå  5 ä½
-            //å°æ—¶å  5 ä½,åˆ†é’Ÿå  6 ä½,ç§’å  5 ä½
+            //Ä¿Â¼ÎÄ¼ş
+            //Í¬Àí,Äê·İÕ¼ 7 Î»,ÔÂ·İÕ¼ 4 Î»,ÈÕÆÚÕ¼ 5 Î»
+            //Ğ¡Ê±Õ¼ 5 Î»,·ÖÖÓÕ¼ 6 Î»,ÃëÕ¼ 5 Î»
             if (fcbPtr->metadata == 0) {
                 printf("%s\t%dB\t<DIR>\t%d/%d/%d\t%02d:%02d:%02d\n",
                        fcbPtr->filename, fcbPtr->length,
@@ -29,7 +29,7 @@ void my_ls() {
                        (fcbPtr->time >> 5) & 0x003f,
                        (fcbPtr->time) & 0x001f * 2);
             } else {
-                // æ™®é€šæ–‡ä»¶ length - 2 æ˜¯å› ä¸ºæœ«å°¾æœ‰/n å’Œ/0 ä¸¤ä¸ªå­—ç¬¦
+                // ÆÕÍ¨ÎÄ¼ş length - 2 ÊÇÒòÎªÄ©Î²ÓĞ/n ºÍ/0 Á½¸ö×Ö·û
                 unsigned int length = fcbPtr->length;
                 if (length != 0)length -= 2;
                 printf("%s.%s\t%dB\t<File>\t%d/%d/%d\t%02d:%02d:%02d\n",

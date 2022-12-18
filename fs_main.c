@@ -1,26 +1,28 @@
 #include "fs.h"
 
+
 int main() {
-    // é˜²æ­¢æŽ§åˆ¶å°è¾“å‡ºä¹±ç 
-    system("chcp 65001");
+    // ·ÀÖ¹¿ØÖÆÌ¨Êä³öÂÒÂë
+    system("chcp 936");
+
     char cmd[15][10] = {"mkdir", "rmdir", "ls", "cd", "create", "rm", "open",
                         "close", "write", "read", "exit", "help", "format"};
     char temp[30], command[30], *sp, *len;
     int indexOfCmd, i;
     int length = 0;
     startsys();
-    printf("æ–‡ä»¶ç³»ç»Ÿå·²å¼€å¯.\n\n");
-    printf("è¾“å…¥ help æ¥æ˜¾ç¤ºå¸®åŠ©é¡µé¢.\n\n");
+    printf("ÎÄ¼þÏµÍ³ÒÑ¿ªÆô.\n\n");
+    printf("ÊäÈë help À´ÏÔÊ¾°ïÖúÒ³Ãæ.\n\n");
     while (1) {
         printf("%s>", openfilelist[currfd].dir);
         fgets(temp, 100, stdin);
         indexOfCmd = -1;
         for (int i = 0; i < strlen(temp) - 1; i++) {
-            command[i] = temp[i]; //fgets å­˜åœ¨ä¸€ä¸ª bugï¼Œä¼šæŠŠ\nä¹Ÿè¯»è¿›åŽ»ï¼Œæ‰€ä»¥è¦å¾®è°ƒä¸€ä¸‹
+            command[i] = temp[i]; //fgets ´æÔÚÒ»¸ö bug£¬»á°Ñ\nÒ²¶Á½øÈ¥£¬ËùÒÔÒªÎ¢µ÷Ò»ÏÂ
             command[i + 1] = '\0';
         }
-        if (strcmp(command, "")) { // ä¸æ˜¯ç©ºå‘½ä»¤
-            sp = strtok(command, " "); // æŠŠç©ºæ ¼å‰çš„å‘½ä»¤åˆ†ç¦»å‡ºæ¥
+        if (strcmp(command, "")) { // ²»ÊÇ¿ÕÃüÁî
+            sp = strtok(command, " "); // °Ñ¿Õ¸ñÇ°µÄÃüÁî·ÖÀë³öÀ´
             //printf("%s\n",sp);
             for (i = 0; i < 15; i++) {
                 if (strcmp(sp, cmd[i]) == 0) {
@@ -79,13 +81,13 @@ int main() {
                     if (openfilelist[currfd].metadata == 1)
                         my_close(currfd);
                     else
-                        printf("å½“å‰æ²¡æœ‰çš„æ‰“å¼€çš„æ–‡ä»¶\n");
+                        printf("µ±Ç°Ã»ÓÐµÄ´ò¿ªµÄÎÄ¼þ\n");
                     break;
                 case 8: // write
                     if (openfilelist[currfd].metadata == 1)
                         my_write(currfd);
                     else
-                        printf("è¯·å…ˆæ‰“å¼€æ–‡ä»¶,ç„¶åŽå†ä½¿ç”¨ write æ“ä½œ\n");
+                        printf("ÇëÏÈ´ò¿ªÎÄ¼þ,È»ºóÔÙÊ¹ÓÃ write ²Ù×÷\n");
                     break;
                 case 9: // read
                     sp = strtok(NULL, " ");
@@ -99,11 +101,11 @@ int main() {
                     else if (openfilelist[currfd].metadata == 1)
                         my_read(currfd, length);
                     else
-                        printf("è¯·å…ˆæ‰“å¼€æ–‡ä»¶,ç„¶åŽå†ä½¿ç”¨ readæ“ä½œ\n");
+                        printf("ÇëÏÈ´ò¿ªÎÄ¼þ,È»ºóÔÙÊ¹ÓÃ read²Ù×÷\n");
                     break;
                 case 10: // exit
                     my_exitsys();
-                    printf("é€€å‡ºæ–‡ä»¶ç³»ç»Ÿ.\n");
+                    printf("ÍË³öÎÄ¼þÏµÍ³.\n");
                     return 0;
                     break;
                 case 11: // help
@@ -113,7 +115,7 @@ int main() {
                     my_format();
                     break;
                 default:
-                    printf("æ²¡æœ‰ %s è¿™ä¸ªå‘½ä»¤\n", sp);
+                    printf("Ã»ÓÐ %s Õâ¸öÃüÁî\n", sp);
                     break;
             }
         } else

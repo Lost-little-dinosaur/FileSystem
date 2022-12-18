@@ -3,13 +3,13 @@
 
 int my_read(int fd, int len) {
     if (fd >= MAXOPENFILE || fd < 0) {
-        printf("Ф√┤Д╩╤Д╦█Е╜≤Е°╗\n");
+        printf("нд╪Ч╡╩╢Фтз\n");
         return -1;
     }
     openfilelist[fd].filePtr = 0;
     char text[MAX_TEXT_SIZE] = "\0";
     if (len > openfilelist[fd].length) {
-        printf("Х╞╩Е▐√И∙©Е╨╕Е╥╡Г╩▐Х╤┘Х©┤Ф√┤Д╩╤Е╓╖Е╟▐О╪▄И╩≤Х╝╓Х╞╩Е┬╟Ф√┤Д╩╤Ф°╚Е╟╬.\n");
+        printf("╤ах║Ё╓╤хря╬╜Ё╛╧Щнд╪Ч╢Сп║ё╛д╛хо╤а╣╫нд╪Чд╘н╡.\n");
         len = openfilelist[fd].length;
     }
     do_read(fd, len, text);

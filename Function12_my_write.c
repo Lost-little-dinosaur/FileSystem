@@ -2,16 +2,16 @@
 
 
 int my_write(int fd) {
-    if (fd > MAXOPENFILE || fd < 0) { //æ£€æŸ¥ fd çš„æœ‰æ•ˆæ€§ï¼Œå¦‚æžœæ— æ•ˆåˆ™è¿”å›ž-1ï¼›
-        printf("æ­¤æ‰“å¼€æ–‡ä»¶ä¸å­˜åœ¨\n");
+    if (fd > MAXOPENFILE || fd < 0) { //¼ì²é fd µÄÓÐÐ§ÐÔ£¬Èç¹ûÎÞÐ§Ôò·µ»Ø-1£»
+        printf("´Ë´ò¿ªÎÄ¼þ²»´æÔÚ\n");
         return -1;
     }
     int wstyle;
     while (1) {
-        printf("è¾“å…¥: 0=æˆªæ–­å†™, 1=è¦†ç›–å†™, 2=è¿½åŠ å†™\n");
+        printf("ÊäÈë: 0=½Ø¶ÏÐ´, 1=¸²¸ÇÐ´, 2=×·¼ÓÐ´\n");
         scanf("%d", &wstyle);
         if (wstyle > 2 || wstyle < 0) {
-            printf("æŒ‡ä»¤é”™è¯¯!\n");
+            printf("Ö¸Áî´íÎó!\n");
         } else {
             break;
         }
@@ -20,7 +20,7 @@ int my_write(int fd) {
     char textTmp[MAX_TEXT_SIZE] = "\0";
     char Tmp[MAX_TEXT_SIZE] = "\0";
     char Tmp2[4] = "\0";
-    printf("è¯·è¾“å…¥æ–‡ä»¶æ•°æ®, ä»¥ END ä¸ºæ–‡ä»¶ç»“å°¾\n");
+    printf("ÇëÊäÈëÎÄ¼þÊý¾Ý, ÒÔ END ÎªÎÄ¼þ½áÎ²\n");
     getchar();
     while (fgets(Tmp, 100, stdin)) {
         for (int i = 0; i < strlen(Tmp) - 1; i++) {
@@ -40,7 +40,7 @@ int my_write(int fd) {
         strcat(text, textTmp);
     }
     text[strlen(text)] = '\0';
-    //+1 æ˜¯å› ä¸ºè¦æŠŠç»“å°¾çš„\0 ä¹Ÿå†™è¿›åŽ»
+    //+1 ÊÇÒòÎªÒª°Ñ½áÎ²µÄ\0 Ò²Ð´½øÈ¥
     do_write(fd, text, strlen(text) + 1, wstyle);
     openfilelist[fd].fcbstate = 1;
     return 1;
