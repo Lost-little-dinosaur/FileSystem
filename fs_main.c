@@ -3,7 +3,7 @@
 
 int main() {
     // ·ÀÖ¹¿ØÖÆÌ¨Êä³öÂÒÂë
-    system("chcp 65001");
+    system("chcp 936");
 
     char cmd[15][10] = {"mkdir", "rmdir", "ls", "cd", "create", "rm", "open",
                         "close", "write", "read", "exit", "help", "format"};
