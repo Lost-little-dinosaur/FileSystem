@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "${default}",
+            "compilerPath": "C:\\Users\\77150\\Downloads\\x86_64-8.1.0-release-win32-seh-rt_v6-rev0\\mingw64\\bin\\c++.exe"
+        }
+    ],
+    "version": 4
+}

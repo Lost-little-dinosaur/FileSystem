@@ -1,45 +1,45 @@
 #include "fs.h"
 
 void my_cd(char *dirname) {
-    //æ€»ç»“:
-    // 1. å¦‚æœå½“å‰æ˜¯ç›®å½•æ–‡ä»¶ä¸‹,é‚£ä¹ˆéœ€è¦æŠŠè¿™ä¸ªç›®å½•æ–‡ä»¶è¯»å–åˆ° buf é‡Œ, ç„¶åæ£€ç´¢è¿™ä¸ªæ–‡ä»¶é‡Œçš„ fcb æœ‰æ²¡æœ‰åŒ¹é… dirname çš„ç›®å½•é¡¹(è€Œä¸”å¿…é¡»æ˜¯ç›®å½•æ–‡ä»¶)
-    // å¦‚æœæœ‰,é‚£å°±åœ¨ openfilelist é‡Œå–ä¸€ä¸ªæ‰“å¼€æ–‡ä»¶è¡¨é¡¹,æŠŠè¿™ä¸ªdirname è¿™ä¸ªç›®å½•æ–‡ä»¶çš„ fcb å†™è¿›å»,ç„¶ååˆ‡æ¢ currfd=fdï¼Œè¿™æ ·å°±ç®—æ˜¯æ‰“å¼€ä¸€ä¸ªç›®å½•äº†
-    if (openfilelist[currfd].metadata == 1) { //ç”¨æˆ·æ‰“å¼€æ–‡ä»¶è¡¨çš„æ–‡ä»¶å±æ€§å­—æ®µï¼š1 è¡¨ç¤ºæ•°æ®æ–‡ä»¶ï¼Œ0 è¡¨ç¤ºç›®å½•æ–‡ä»¶
-        printf("è¯¥æ–‡ä»¶ä¸æ˜¯ä¸€ä¸ªç›®å½•æ–‡ä»¶ï¼Œè€Œæ˜¯ä¸€ä¸ªæ•°æ®æ–‡ä»¶ï¼Œæ— æ³•ä½¿ç”¨cdå‘½ä»¤è¿›å…¥\n");
+    //×Ü½á:
+    // 1. Èç¹ûµ±Ç°ÊÇÄ¿Â¼ÎÄ¼şÏÂ,ÄÇÃ´ĞèÒª°ÑÕâ¸öÄ¿Â¼ÎÄ¼ş¶ÁÈ¡µ½ buf Àï, È»ºó¼ìË÷Õâ¸öÎÄ¼şÀïµÄ fcb ÓĞÃ»ÓĞÆ¥Åä dirname µÄÄ¿Â¼Ïî(¶øÇÒ±ØĞëÊÇÄ¿Â¼ÎÄ¼ş)
+    // Èç¹ûÓĞ,ÄÇ¾ÍÔÚ openfilelist ÀïÈ¡Ò»¸ö´ò¿ªÎÄ¼ş±íÏî,°ÑÕâ¸ödirname Õâ¸öÄ¿Â¼ÎÄ¼şµÄ fcb Ğ´½øÈ¥,È»ºóÇĞ»» currfd=fd£¬ÕâÑù¾ÍËãÊÇ´ò¿ªÒ»¸öÄ¿Â¼ÁË
+    if (openfilelist[currfd].metadata == 1) { //ÓÃ»§´ò¿ªÎÄ¼ş±íµÄÎÄ¼şÊôĞÔ×Ö¶Î£º1 ±íÊ¾Êı¾İÎÄ¼ş£¬0 ±íÊ¾Ä¿Â¼ÎÄ¼ş
+        printf("¸ÃÎÄ¼ş²»ÊÇÒ»¸öÄ¿Â¼ÎÄ¼ş£¬¶øÊÇÒ»¸öÊı¾İÎÄ¼ş£¬ÎŞ·¨Ê¹ÓÃcdÃüÁî½øÈë\n");
         return;
-    } else {//å¦‚æœæ˜¯ç›®å½•æ–‡ä»¶
-        //å¯»æ‰¾ç›®å½•æ–‡ä»¶é‡Œé¢æœ‰æ²¡æœ‰åŒ¹é…çš„åå­—, å…ˆæŠŠç›®å½•æ–‡ä»¶çš„ä¿¡æ¯è¯»å–åˆ° buf é‡Œ
-        char *buf = (char *) malloc(MAXOPENFILE); //ç”³è¯·ä¸€ä¸ªç¼“å†²åŒºï¼Œç”¨æ¥å­˜æ”¾ç›®å½•æ–‡ä»¶çš„å†…å®¹ï¼Œå¤§å°ä¸º MAXOPENFILE
-        openfilelist[currfd].filePtr = 0; //æŠŠæ–‡ä»¶æŒ‡é’ˆæŒ‡å‘æ–‡ä»¶å¼€å¤´
-        do_read(currfd, openfilelist[currfd].length, buf); //ç›®å½•æ–‡ä»¶ä¿¡æ¯è¯»åˆ°bufé‡Œ
+    } else {//Èç¹ûÊÇÄ¿Â¼ÎÄ¼ş
+        //Ñ°ÕÒÄ¿Â¼ÎÄ¼şÀïÃæÓĞÃ»ÓĞÆ¥ÅäµÄÃû×Ö, ÏÈ°ÑÄ¿Â¼ÎÄ¼şµÄĞÅÏ¢¶ÁÈ¡µ½ buf Àï
+        char *buf = (char *) malloc(MAXOPENFILE); //ÉêÇëÒ»¸ö»º³åÇø£¬ÓÃÀ´´æ·ÅÄ¿Â¼ÎÄ¼şµÄÄÚÈİ£¬´óĞ¡Îª MAXOPENFILE
+        openfilelist[currfd].filePtr = 0; //°ÑÎÄ¼şÖ¸ÕëÖ¸ÏòÎÄ¼ş¿ªÍ·
+        do_read(currfd, openfilelist[currfd].length, buf); //Ä¿Â¼ÎÄ¼şĞÅÏ¢¶Áµ½bufÀï
         int i;
-        fcb *fcbPtr = (fcb *) buf; //æŠŠ buf é‡Œçš„å†…å®¹å¼ºåˆ¶è½¬æ¢æˆ fcb ç±»å‹
-        for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb)); i++) { //éå†ç›®å½•æ–‡ä»¶é‡Œçš„æ‰€æœ‰ fcb
-            if (strcmp(fcbPtr->filename, dirname) == 0 && fcbPtr->metadata == 0) { //å¦‚æœæ‰¾åˆ°äº†åŒ¹é…çš„ç›®å½•æ–‡ä»¶
+        fcb *fcbPtr = (fcb *) buf; //°Ñ buf ÀïµÄÄÚÈİÇ¿ÖÆ×ª»»³É fcb ÀàĞÍ
+        for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb)); i++) { //±éÀúÄ¿Â¼ÎÄ¼şÀïµÄËùÓĞ fcb
+            if (strcmp(fcbPtr->filename, dirname) == 0 && fcbPtr->metadata == 0) { //Èç¹ûÕÒµ½ÁËÆ¥ÅäµÄÄ¿Â¼ÎÄ¼ş
                 break;
             } else {
-                fcbPtr++; //æŒ‡å‘ä¸‹ä¸€ä¸ª fcb,ç»§ç»­éå†
+                fcbPtr++; //Ö¸ÏòÏÂÒ»¸ö fcb,¼ÌĞø±éÀú
             }
         }
-        if (fcbPtr->exname[0]!='d' || fcbPtr->exname[1]!='i'){ //ä¸å…è®¸ cd éç›®å½•æ–‡ä»¶
-            printf("è¯¥æ–‡ä»¶ä¸æ˜¯ä¸€ä¸ªç›®å½•æ–‡ä»¶ï¼Œè€Œæ˜¯ä¸€ä¸ªæ•°æ®æ–‡ä»¶ï¼Œæ— æ³•ä½¿ç”¨cdå‘½ä»¤è¿›å…¥\n");
+        if (fcbPtr->exname[0]!='d' || fcbPtr->exname[1]!='i'){ //²»ÔÊĞí cd ·ÇÄ¿Â¼ÎÄ¼ş
+            printf("¸ÃÎÄ¼ş²»ÊÇÒ»¸öÄ¿Â¼ÎÄ¼ş£¬¶øÊÇÒ»¸öÊı¾İÎÄ¼ş£¬ÎŞ·¨Ê¹ÓÃcdÃüÁî½øÈë\n");
             return;
-        } else { //å¦‚æœ cd äº†ä¸€ä¸ªç›®å½•æ–‡ä»¶, é‚£ä¹ˆåˆ¤æ–­æ˜¯.è¿˜æ˜¯..è¿˜æ˜¯å­æ–‡ä»¶,å¦‚æœæ˜¯å­æ–‡ä»¶åˆ™æ‰“å¼€è¿™ä¸ªç›®å½•æ–‡ä»¶åˆ°openfilelisté‡Œ
-            if (strcmp(fcbPtr->filename, ".") == 0) { //cd .ä¸ä¼šæœ‰ååº”
+        } else { //Èç¹û cd ÁËÒ»¸öÄ¿Â¼ÎÄ¼ş, ÄÇÃ´ÅĞ¶ÏÊÇ.»¹ÊÇ..»¹ÊÇ×ÓÎÄ¼ş,Èç¹ûÊÇ×ÓÎÄ¼şÔò´ò¿ªÕâ¸öÄ¿Â¼ÎÄ¼şµ½openfilelistÀï
+            if (strcmp(fcbPtr->filename, ".") == 0) { //cd .²»»áÓĞ·´Ó¦
                 return;
-            } else if (strcmp(fcbPtr->filename, "..") == 0) {//cd ..éœ€è¦åˆ¤æ–­ç°åœ¨æ˜¯ä¸æ˜¯æ ¹ç›®å½•, å¦‚æœæ˜¯æ ¹ç›®å½•,ä¸æ“ä½œ, å¦åˆ™,è¿”å›ä¸Šä¸€å±‚
+            } else if (strcmp(fcbPtr->filename, "..") == 0) {//cd ..ĞèÒªÅĞ¶ÏÏÖÔÚÊÇ²»ÊÇ¸ùÄ¿Â¼, Èç¹ûÊÇ¸ùÄ¿Â¼,²»²Ù×÷, ·ñÔò,·µ»ØÉÏÒ»²ã
                 if (currfd == 0) {
                     return;
                 } else {
                     currfd = my_close(currfd);
                     return;
                 }
-            } else { //cd å­æ–‡ä»¶
-                int fd = get_Free_Openfile(); //ä»æ‰“å¼€æ–‡ä»¶è¡¨é‡Œé¢æ‰¾ä¸€ä¸ªç©ºé—²çš„æ‰“å¼€æ–‡ä»¶è¡¨é¡¹
-                if (fd == -1) { //å¦‚æœæ²¡æœ‰ç©ºé—²çš„æ‰“å¼€æ–‡ä»¶è¡¨é¡¹æˆ–è€…æ‰“å¼€æ–‡ä»¶è¡¨å·²ç»æ»¡äº†
+            } else { //cd ×ÓÎÄ¼ş
+                int fd = get_Free_Openfile(); //´Ó´ò¿ªÎÄ¼ş±íÀïÃæÕÒÒ»¸ö¿ÕÏĞµÄ´ò¿ªÎÄ¼ş±íÏî
+                if (fd == -1) { //Èç¹ûÃ»ÓĞ¿ÕÏĞµÄ´ò¿ªÎÄ¼ş±íÏî»òÕß´ò¿ªÎÄ¼ş±íÒÑ¾­ÂúÁË
                     return;
                 } else {
-                    // å°†è¿™ä¸ªç›®å½•æ–‡ä»¶çš„ fcb å¯¹åº”çš„ä¿¡æ¯å†™è¿›æ‰“å¼€æ–‡ä»¶è¡¨é¡¹é‡Œ
+                    // ½«Õâ¸öÄ¿Â¼ÎÄ¼şµÄ fcb ¶ÔÓ¦µÄĞÅÏ¢Ğ´½ø´ò¿ªÎÄ¼ş±íÏîÀï
                     openfilelist[fd].metadata = fcbPtr->metadata;
                     openfilelist[fd].filePtr = 0;
                     openfilelist[fd].date = fcbPtr->date;
@@ -53,11 +53,11 @@ void my_cd(char *dirname) {
 
                     openfilelist[fd].fcbstate = 0;
                     strcpy(openfilelist[fd].dir,
-                           (char *) (strcat(strcat(openfilelist[currfd].dir, dirname), "\\"))); //æŠŠå½“å‰ç›®å½•çš„è·¯å¾„å†™è¿›æ‰“å¼€æ–‡ä»¶è¡¨é¡¹é‡Œ
+                           (char *) (strcat(strcat(openfilelist[currfd].dir, dirname), "\\"))); //°Ñµ±Ç°Ä¿Â¼µÄÂ·¾¶Ğ´½ø´ò¿ªÎÄ¼ş±íÏîÀï
                     openfilelist[fd].topenfile = 1;
                     openfilelist[fd].dirno = openfilelist[currfd].first;
                     openfilelist[fd].diroff = i;
-                    currfd = fd; //åˆ‡æ¢å½“å‰ç›®å½•
+                    currfd = fd; //ÇĞ»»µ±Ç°Ä¿Â¼
                 }
             }
         }

@@ -30,22 +30,22 @@ int find_father_dir(int fd) {
 }
 
 void show_help() {
-    printf("å‘½ä»¤å\t\t\t å‘½ä»¤å‚æ•°\t\t\t å‘½ä»¤åŠŸèƒ½\n\n");
-    printf("format\t\t\t æ— \t\t\t æ ¼å¼åŒ–\n");
-    printf("cd\t\t\t ç›®å½•å(è·¯å¾„å)\t\t\t åˆ‡æ¢å½“å‰ç›®å½•åˆ°æŒ‡å®šç›®å½•\n");
-    printf("mkdir\t\t\t ç›®å½•å\t\t\t\t åœ¨å½“å‰ç›®å½•åˆ›å»ºæ–°ç›®å½•\n");
-    printf("rmdir\t\t\t ç›®å½•å\t\t\t\t åœ¨å½“å‰ç›®å½•åˆ é™¤æŒ‡å®šç›®å½•\n");
-    printf("ls\t\t\t æ— \t\t\t\t æ˜¾ç¤ºå½“å‰ç›®å½•ä¸‹çš„ç›®å½•å’Œæ–‡ä»¶\n");
-    printf("create\t\t\t æ–‡ä»¶å\t\t\t\t åœ¨å½“å‰ç›®å½•ä¸‹åˆ›å»ºæŒ‡å®šæ–‡ä»¶\n");
-    printf("rm\t\t\t æ–‡ä»¶å\t\t\t\t åœ¨å½“å‰ç›®å½•ä¸‹åˆ é™¤æŒ‡å®šæ–‡ä»¶\n");
-    printf("open\t\t\t æ–‡ä»¶å\t\t\t\t åœ¨å½“å‰ç›®å½•ä¸‹æ‰“å¼€æŒ‡å®šæ–‡ä»¶\n");
-    printf("write\t\t\t æ— \t\t\t\t åœ¨æ‰“å¼€æ–‡ä»¶çŠ¶æ€ä¸‹ï¼Œå†™è¯¥æ–‡ä»¶\n");
-    printf("read\t\t\t æ–‡ä»¶å.åç¼€\t\t\t\t åœ¨æ‰“å¼€æ–‡ä»¶çŠ¶æ€ä¸‹ï¼Œè¯»å–è¯¥æ–‡ä»¶\n");
-    printf("close\t\t\t æ— \t\t\t\t åœ¨æ‰“å¼€æ–‡ä»¶çŠ¶æ€ä¸‹ï¼Œå…³é—­è¯¥æ–‡ä»¶\n");
-    printf("exit\t\t\t æ— \t\t\t\t é€€å‡ºç³»ç»Ÿ\n\n");
+    printf("ÃüÁîÃû\t\t\t ÃüÁî²ÎÊı\t\t\t ÃüÁî¹¦ÄÜ\n\n");
+    printf("format\t\t\t ÎŞ\t\t\t ¸ñÊ½»¯\n");
+    printf("cd\t\t\t Ä¿Â¼Ãû(Â·¾¶Ãû)\t\t\t ÇĞ»»µ±Ç°Ä¿Â¼µ½Ö¸¶¨Ä¿Â¼\n");
+    printf("mkdir\t\t\t Ä¿Â¼Ãû\t\t\t\t ÔÚµ±Ç°Ä¿Â¼´´½¨ĞÂÄ¿Â¼\n");
+    printf("rmdir\t\t\t Ä¿Â¼Ãû\t\t\t\t ÔÚµ±Ç°Ä¿Â¼É¾³ıÖ¸¶¨Ä¿Â¼\n");
+    printf("ls\t\t\t ÎŞ\t\t\t\t ÏÔÊ¾µ±Ç°Ä¿Â¼ÏÂµÄÄ¿Â¼ºÍÎÄ¼ş\n");
+    printf("create\t\t\t ÎÄ¼şÃû\t\t\t\t ÔÚµ±Ç°Ä¿Â¼ÏÂ´´½¨Ö¸¶¨ÎÄ¼ş\n");
+    printf("rm\t\t\t ÎÄ¼şÃû\t\t\t\t ÔÚµ±Ç°Ä¿Â¼ÏÂÉ¾³ıÖ¸¶¨ÎÄ¼ş\n");
+    printf("open\t\t\t ÎÄ¼şÃû\t\t\t\t ÔÚµ±Ç°Ä¿Â¼ÏÂ´ò¿ªÖ¸¶¨ÎÄ¼ş\n");
+    printf("write\t\t\t ÎŞ\t\t\t\t ÔÚ´ò¿ªÎÄ¼ş×´Ì¬ÏÂ£¬Ğ´¸ÃÎÄ¼ş\n");
+    printf("read\t\t\t ÎÄ¼şÃû.ºó×º\t\t\t\t ÔÚ´ò¿ªÎÄ¼ş×´Ì¬ÏÂ£¬¶ÁÈ¡¸ÃÎÄ¼ş\n");
+    printf("close\t\t\t ÎŞ\t\t\t\t ÔÚ´ò¿ªÎÄ¼ş×´Ì¬ÏÂ£¬¹Ø±Õ¸ÃÎÄ¼ş\n");
+    printf("exit\t\t\t ÎŞ\t\t\t\t ÍË³öÏµÍ³\n\n");
 }
 
 void error(char *command) {
-    printf("%s : ç¼ºå°‘å‚æ•°\n", command);
-    printf("è¾“å…¥ 'help' æ¥æŸ¥çœ‹å‘½ä»¤æç¤º.\n");
+    printf("%s : È±ÉÙ²ÎÊı\n", command);
+    printf("ÊäÈë 'help' À´²é¿´ÃüÁîÌáÊ¾.\n");
 }

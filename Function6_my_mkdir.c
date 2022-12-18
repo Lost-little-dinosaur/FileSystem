@@ -1,44 +1,44 @@
 #include "fs.h"
 
 void my_mkdir(char *dirname) {
-    // 1. åˆ¤æ–­ dirname æ˜¯å¦åˆæ³•
-    // 2. æ‰“å¼€å½“å‰ç›®å½•çš„ç›®å½•æ–‡ä»¶,æŸ¥æ‰¾æ˜¯å¦é‡å
-    // 3. å ç”¨ä¸€ä¸ªç›˜å—, åœ¨ FAT é‡Œè¦å†™å¥½è¿™ä¸ªç›˜å—è¢«å ç”¨äº†
-    // 4. å ç”¨ä¸€ä¸ªæ‰“å¼€æ–‡ä»¶è¡¨é¡¹,è¿™æ˜¯å› ä¸ºä¸€ä¼šè¦åœ¨è¿™ä¸ªç›®å½•æ–‡ä»¶é‡Œé¢å†™å…¥é»˜è®¤çš„.å’Œ..ä¸¤ä¸ªç‰¹æ®Šæ–‡ä»¶ç›®å½•é¡¹
-    // è€Œè°ƒç”¨ do_write,æ˜¯éœ€è¦å…ˆæ‰“å¼€è¿™ä¸ªæ–‡ä»¶çš„.
-    // å†™å…¥.å’Œ..ä¸¤ä¸ªæ–‡ä»¶ç›®å½•é¡¹åˆ°æ–°å»ºçš„ç›®å½•æ–‡ä»¶é‡Œ
-    // 5. å®Œæ¯•è¿™ä¸ª openfilelist
-    // 6. ä¿®æ”¹çˆ¶ç›®å½•æ–‡ä»¶çš„å¤§å°,å› ä¸ºæ·»åŠ äº†ä¸€ä¸ªæ–‡ä»¶ç›®å½•é¡¹
-    // ä¾‹ åœ¨\a\è¿™ä¸ªç›®å½•ä¸‹åˆ›å»ºäº† b è¿™ä¸ªç›®å½•, é‚£ä¹ˆ a è¿™ä¸ªç›®å½•æ–‡ä»¶çš„å¤§å°è¦+=sizeof(fcb)
-    //åˆ¤æ–­ dirname æ˜¯å¦åˆæ³•
+    // 1. ÅĞ¶Ï dirname ÊÇ·ñºÏ·¨
+    // 2. ´ò¿ªµ±Ç°Ä¿Â¼µÄÄ¿Â¼ÎÄ¼ş,²éÕÒÊÇ·ñÖØÃû
+    // 3. Õ¼ÓÃÒ»¸öÅÌ¿é, ÔÚ FAT ÀïÒªĞ´ºÃÕâ¸öÅÌ¿é±»Õ¼ÓÃÁË
+    // 4. Õ¼ÓÃÒ»¸ö´ò¿ªÎÄ¼ş±íÏî,ÕâÊÇÒòÎªÒ»»áÒªÔÚÕâ¸öÄ¿Â¼ÎÄ¼şÀïÃæĞ´ÈëÄ¬ÈÏµÄ.ºÍ..Á½¸öÌØÊâÎÄ¼şÄ¿Â¼Ïî
+    // ¶øµ÷ÓÃ do_write,ÊÇĞèÒªÏÈ´ò¿ªÕâ¸öÎÄ¼şµÄ.
+    // Ğ´Èë.ºÍ..Á½¸öÎÄ¼şÄ¿Â¼Ïîµ½ĞÂ½¨µÄÄ¿Â¼ÎÄ¼şÀï
+    // 5. Íê±ÏÕâ¸ö openfilelist
+    // 6. ĞŞ¸Ä¸¸Ä¿Â¼ÎÄ¼şµÄ´óĞ¡,ÒòÎªÌí¼ÓÁËÒ»¸öÎÄ¼şÄ¿Â¼Ïî
+    // Àı ÔÚ\a\Õâ¸öÄ¿Â¼ÏÂ´´½¨ÁË b Õâ¸öÄ¿Â¼, ÄÇÃ´ a Õâ¸öÄ¿Â¼ÎÄ¼şµÄ´óĞ¡Òª+=sizeof(fcb)
+    //ÅĞ¶Ï dirname ÊÇ·ñºÏ·¨
     char *fname = strtok(dirname, ".");
     char *exname = strtok(NULL, ".");
     if (exname) {
-        printf("ä¸å…è®¸è¾“å…¥åç¼€å!\n");
+        printf("²»ÔÊĞíÊäÈëºó×ºÃû!\n");
         return;
     }
     char text[MAX_TEXT_SIZE];
     openfilelist[currfd].filePtr = 0;
     int fileLen = do_read(currfd, openfilelist[currfd].length, text);
-    //text é‡Œçš„å†…å®¹å°±æ˜¯ä¸€ä¸ªä¸ª fcb
+    //text ÀïµÄÄÚÈİ¾ÍÊÇÒ»¸ö¸ö fcb
     fcb *fcbPtr = (fcb *) text;
     for (int i = 0; i < (int) (fileLen / sizeof(fcb)); i++) {
         if (strcmp(dirname, fcbPtr[i].filename) == 0 && fcbPtr->metadata ==
                                                         0) {
-            printf("ç›®å½•åå·²ç»å­˜åœ¨!\n");
+            printf("Ä¿Â¼ÃûÒÑ¾­´æÔÚ!\n");
             return;
         }
     }
-    //åœ¨æ‰“å¼€æ–‡ä»¶è¡¨é‡Œæ‰¾ä¸€ä¸ªç©ºæ–‡ä»¶è¡¨é¡¹
+    //ÔÚ´ò¿ªÎÄ¼ş±íÀïÕÒÒ»¸ö¿ÕÎÄ¼ş±íÏî
     int fd = get_Free_Openfile();
     if (fd == -1) {
-        printf("æ‰“å¼€æ–‡ä»¶è¡¨å·²å…¨éƒ¨è¢«å ç”¨\n");
+        printf("´ò¿ªÎÄ¼ş±íÒÑÈ«²¿±»Õ¼ÓÃ\n");
         return;
     }
-    //åœ¨ FAT é‡Œæ‰¾ä¸€ä¸ªç©ºç›˜å—
+    //ÔÚ FAT ÀïÕÒÒ»¸ö¿ÕÅÌ¿é
     unsigned short int blockNum = getFreeBLOCK();
     if (blockNum == END) {
-        printf("ç›˜å—å·²ç»ç”¨å®Œ\n");
+        printf("ÅÌ¿éÒÑ¾­ÓÃÍê\n");
         openfilelist[fd].topenfile = 0;
         return;
     }
@@ -46,7 +46,7 @@ void my_mkdir(char *dirname) {
     fat *fat2 = (fat *) (v_addr0 + BLOCKSIZE * 3);
     fat1[blockNum].id = END;
     fat2[blockNum].id = END;
-    //åœ¨å½“å‰ç›®å½•é‡Œé¢æ·»åŠ ä¸€ä¸ªæˆ‘ä»¬è¦çš„ç›®å½•é¡¹
+    //ÔÚµ±Ç°Ä¿Â¼ÀïÃæÌí¼ÓÒ»¸öÎÒÃÇÒªµÄÄ¿Â¼Ïî
     int i = 0;
     for (; i < (int) (fileLen / sizeof(fcb)); i++) {
         if (fcbPtr[i].free == 0) {
@@ -54,10 +54,10 @@ void my_mkdir(char *dirname) {
         }
     }
     openfilelist[currfd].filePtr = i * sizeof(fcb);
-    //ä¿®æ”¹äº† fcb,fcbstate ç½® 1
+    //ĞŞ¸ÄÁË fcb,fcbstate ÖÃ 1
     openfilelist[currfd].fcbstate = 1;
-    //ä¿®æ”¹æ–°å»ºçš„ç›®å½•é¡¹,å³ fcb å†…å®¹
-    //å› ä¸ºç°åœ¨æ˜¯åœ¨æ¨¡æ‹Ÿæ–‡ä»¶ç³»ç»Ÿ,æˆ‘ä»¬è¦å…ˆå†™åˆ°ä¸´æ—¶çš„ fcb é‡Œ,ç„¶åç”¨ do_write è½¬å†™åˆ°ç£ç›˜é‡Œ
+    //ĞŞ¸ÄĞÂ½¨µÄÄ¿Â¼Ïî,¼´ fcb ÄÚÈİ
+    //ÒòÎªÏÖÔÚÊÇÔÚÄ£ÄâÎÄ¼şÏµÍ³,ÎÒÃÇÒªÏÈĞ´µ½ÁÙÊ±µÄ fcb Àï,È»ºóÓÃ do_write ×ªĞ´µ½´ÅÅÌÀï
     fcb *fcbtmp = (fcb *) malloc(sizeof(fcb));
     fcbtmp->metadata = 0;
     time_t rawtime = time(NULL);
@@ -71,9 +71,9 @@ void my_mkdir(char *dirname) {
     fcbtmp->first = blockNum;
     fcbtmp->length = 2 * sizeof(fcb);
     fcbtmp->free = 1;
-    //ç”¨ do_write æŠŠ fcbtmp å†™å…¥åˆ°ç›®å½•æ–‡ä»¶é‡Œ
+    //ÓÃ do_write °Ñ fcbtmp Ğ´Èëµ½Ä¿Â¼ÎÄ¼şÀï
     do_write(currfd, (char *) fcbtmp, sizeof(fcb), 1);
-    //è®¾ç½®æ‰“å¼€æ–‡ä»¶è¡¨é¡¹
+    //ÉèÖÃ´ò¿ªÎÄ¼ş±íÏî
     openfilelist[fd].metadata = 0;
     openfilelist[fd].filePtr = 0;
     openfilelist[fd].date = fcbtmp->date;
@@ -87,8 +87,8 @@ void my_mkdir(char *dirname) {
     openfilelist[fd].free = fcbtmp->free;
     openfilelist[fd].length = fcbtmp->length;
     openfilelist[fd].topenfile = 1;
-    //åœ¨å¯¹åº”çš„ç›˜å—é‡Œæ·»åŠ ä¸¤ä¸ªç‰¹æ®Šçš„ç›®å½•.å’Œ..
-    //åŒç†è¿™é‡Œä¹Ÿä¸èƒ½ç›´æ¥å†™è¿› fcbPtr é‡Œ,åªèƒ½ç”¨ fcbTmp å†™è¿›å†…å­˜é‡Œ,ç„¶åç”¨ do_writeè½¬å†™è¿›æ–‡ä»¶
+    //ÔÚ¶ÔÓ¦µÄÅÌ¿éÀïÌí¼ÓÁ½¸öÌØÊâµÄÄ¿Â¼.ºÍ..
+    //Í¬ÀíÕâÀïÒ²²»ÄÜÖ±½ÓĞ´½ø fcbPtr Àï,Ö»ÄÜÓÃ fcbTmp Ğ´½øÄÚ´æÀï,È»ºóÓÃ do_write×ªĞ´½øÎÄ¼ş
     fcbtmp->metadata = 0;
     fcbtmp->date = fcbtmp->date;
     fcbtmp->time = fcbtmp->time;
@@ -97,7 +97,7 @@ void my_mkdir(char *dirname) {
     fcbtmp->first = blockNum;
     fcbtmp->length = 2 * sizeof(fcb);
     do_write(fd, (char *) fcbtmp, sizeof(fcb), 1);
-    //å¤åˆ¶..ç›®å½•
+    //¸´ÖÆ..Ä¿Â¼
     fcb *fcbtmp2 = (fcb *) malloc(sizeof(fcb));
     memcpy(fcbtmp2, fcbtmp, sizeof(fcb));
     strcpy(fcbtmp2->filename, "..");
@@ -107,7 +107,7 @@ void my_mkdir(char *dirname) {
     fcbtmp2->time = openfilelist[currfd].time;
     do_write(fd, (char *) fcbtmp2, sizeof(fcb), 1);
     my_close(fd);
-    //æ›´æ–°æœ¬ currfd ç›®å½•æ–‡ä»¶çš„ fcb
+    //¸üĞÂ±¾ currfd Ä¿Â¼ÎÄ¼şµÄ fcb
     fcbPtr = (fcb *) text;
     fcbPtr->length = openfilelist[currfd].length;
     openfilelist[currfd].filePtr = 0;

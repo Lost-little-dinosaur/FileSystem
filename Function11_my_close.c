@@ -1,32 +1,32 @@
 #include "fs.h"
 
 int my_close(int fd) {
-    if (fd > MAXOPENFILE || fd < 0) { //æ£€æŸ¥ fd çš„æœ‰æ•ˆæ€§ï¼Œå¦‚æœæ— æ•ˆåˆ™è¿”å›-1ï¼›
-        printf("æ­¤æ‰“å¼€æ–‡ä»¶ä¸å­˜åœ¨\n");
+    if (fd > MAXOPENFILE || fd < 0) { //¼ì²é fd µÄÓĞĞ§ĞÔ£¬Èç¹ûÎŞĞ§Ôò·µ»Ø-1£»
+        printf("´Ë´ò¿ªÎÄ¼ş²»´æÔÚ\n");
         return -1;
     } else {
-        //åˆ¤æ–­çˆ¶ç›®å½•æ–‡ä»¶æ˜¯å¦å­˜åœ¨, ä¸å­˜åœ¨-1
+        //ÅĞ¶Ï¸¸Ä¿Â¼ÎÄ¼şÊÇ·ñ´æÔÚ, ²»´æÔÚ-1
         int fatherFd = find_father_dir(fd);
         if (fatherFd == -1) {
-            printf("çˆ¶ç›®å½•ä¸å­˜åœ¨");
+            printf("¸¸Ä¿Â¼²»´æÔÚ");
             return -1;
         }
-        //æ£€æŸ¥fcbstateå­—æ®µ,å¦‚æœæ˜¯ 1,åˆ™éœ€è¦å°†è¯¥æ–‡ä»¶çš„FCBçš„å†…å®¹ä¿å­˜åˆ°è™šæ‹Ÿç£ç›˜ä¸Šè¯¥æ–‡ä»¶çš„ç›®å½•é¡¹
+        //¼ì²éfcbstate×Ö¶Î,Èç¹ûÊÇ 1,ÔòĞèÒª½«¸ÃÎÄ¼şµÄFCBµÄÄÚÈİ±£´æµ½ĞéÄâ´ÅÅÌÉÏ¸ÃÎÄ¼şµÄÄ¿Â¼Ïî
         if (openfilelist[fd].fcbstate == 1) {
             char buf[MAX_TEXT_SIZE];
-            do_read(fatherFd, openfilelist[fatherFd].length, buf); //æŠŠçˆ¶ç›®å½•æ–‡ä»¶ä»ç£ç›˜ä¸­è¯»å–åˆ° buf ä¸­
-            //æ›´æ–° fcb å†…å®¹
-            fcb *fcbPtr = (fcb *) (buf + sizeof(fcb) * openfilelist[fd].diroff); //fcbPtr æŒ‡å‘è¿™ä¸ªæ–‡ä»¶çš„å¯¹åº” fcb çš„ä½ç½®
-            //diroff ç›¸åº”æ‰“å¼€æ–‡ä»¶çš„ç›®å½•é¡¹åœ¨çˆ¶ç›®å½•æ–‡ä»¶çš„ dirno ç›˜å—ä¸­çš„ç›®å½•é¡¹åºå·
-            strcpy(fcbPtr->exname, openfilelist[fd].exname); // æ–‡ä»¶æ‰©å±•å
-            strcpy(fcbPtr->filename, openfilelist[fd].filename); // æ–‡ä»¶å
-            fcbPtr->first = openfilelist[fd].first; // æ–‡ä»¶èµ·å§‹ç›˜å—å·
-            fcbPtr->free = openfilelist[fd].free; // è¡¨ç¤ºç›®å½•é¡¹æ˜¯å¦ä¸ºç©ºï¼Œè‹¥å€¼ä¸º 0ï¼Œè¡¨ç¤ºç©ºï¼Œå€¼ä¸º 1ï¼Œè¡¨ç¤ºå·²åˆ†é…
-            fcbPtr->length = openfilelist[fd].length; // æ–‡ä»¶é•¿åº¦ï¼ˆå¯¹æ•°æ®æ–‡ä»¶æ˜¯å­—èŠ‚æ•°ï¼Œå¯¹ç›®å½•æ–‡ä»¶å¯ä»¥æ˜¯ç›®å½•é¡¹ä¸ªæ•°ï¼‰
-            openfilelist[fatherFd].filePtr = 0; // è¯»å†™æŒ‡é’ˆåœ¨æ–‡ä»¶ä¸­çš„ä½ç½®
-            fcbPtr->time = openfilelist[fd].time; // æ–‡ä»¶åˆ›å»ºæ—¶é—´
-            fcbPtr->date = openfilelist[fd].date; // æ–‡ä»¶åˆ›å»ºæ—¥æœŸ
-            fcbPtr->metadata = openfilelist[fd].metadata; // æ–‡ä»¶å±æ€§å­—æ®µ 1 è¡¨ç¤ºæ•°æ®æ–‡ä»¶ï¼Œ0 è¡¨ç¤ºç›®å½•æ–‡ä»¶
+            do_read(fatherFd, openfilelist[fatherFd].length, buf); //°Ñ¸¸Ä¿Â¼ÎÄ¼ş´Ó´ÅÅÌÖĞ¶ÁÈ¡µ½ buf ÖĞ
+            //¸üĞÂ fcb ÄÚÈİ
+            fcb *fcbPtr = (fcb *) (buf + sizeof(fcb) * openfilelist[fd].diroff); //fcbPtr Ö¸ÏòÕâ¸öÎÄ¼şµÄ¶ÔÓ¦ fcb µÄÎ»ÖÃ
+            //diroff ÏàÓ¦´ò¿ªÎÄ¼şµÄÄ¿Â¼ÏîÔÚ¸¸Ä¿Â¼ÎÄ¼şµÄ dirno ÅÌ¿éÖĞµÄÄ¿Â¼ÏîĞòºÅ
+            strcpy(fcbPtr->exname, openfilelist[fd].exname); // ÎÄ¼şÀ©Õ¹Ãû
+            strcpy(fcbPtr->filename, openfilelist[fd].filename); // ÎÄ¼şÃû
+            fcbPtr->first = openfilelist[fd].first; // ÎÄ¼şÆğÊ¼ÅÌ¿éºÅ
+            fcbPtr->free = openfilelist[fd].free; // ±íÊ¾Ä¿Â¼ÏîÊÇ·ñÎª¿Õ£¬ÈôÖµÎª 0£¬±íÊ¾¿Õ£¬ÖµÎª 1£¬±íÊ¾ÒÑ·ÖÅä
+            fcbPtr->length = openfilelist[fd].length; // ÎÄ¼ş³¤¶È£¨¶ÔÊı¾İÎÄ¼şÊÇ×Ö½ÚÊı£¬¶ÔÄ¿Â¼ÎÄ¼ş¿ÉÒÔÊÇÄ¿Â¼Ïî¸öÊı£©
+            openfilelist[fatherFd].filePtr = 0; // ¶ÁĞ´Ö¸ÕëÔÚÎÄ¼şÖĞµÄÎ»ÖÃ
+            fcbPtr->time = openfilelist[fd].time; // ÎÄ¼ş´´½¨Ê±¼ä
+            fcbPtr->date = openfilelist[fd].date; // ÎÄ¼ş´´½¨ÈÕÆÚ
+            fcbPtr->metadata = openfilelist[fd].metadata; // ÎÄ¼şÊôĞÔ×Ö¶Î 1 ±íÊ¾Êı¾İÎÄ¼ş£¬0 ±íÊ¾Ä¿Â¼ÎÄ¼ş
             openfilelist[fatherFd].filePtr = openfilelist[fd].diroff * sizeof(fcb);
             do_write(fatherFd, (char *) fcbPtr, sizeof(fcb), 1);
         }

@@ -4,38 +4,38 @@
 int do_write(int fd, char *text, int len, char wstyle) {
     int blockNum = openfilelist[fd].first;
     fat *fatPtr = (fat *) (v_addr0 + BLOCKSIZE) + blockNum;
-    //ä¸‰ç§å†™å…¥æ–¹å¼é¢„å¤„ç†
-    // 0 æˆªæ–­å†™,ç›´æ¥ä»å¤´å¼€å§‹å†™,åç§»é‡å°±æ˜¯ 0 äº†,è€Œä¸”é•¿åº¦å˜æˆ 0
-    fat *fat1 =  (v_addr0 + BLOCKSIZE);
+    //ÈıÖÖĞ´Èë·½Ê½Ô¤´¦Àí
+    // 0 ½Ø¶ÏĞ´,Ö±½Ó´ÓÍ·¿ªÊ¼Ğ´,Æ«ÒÆÁ¿¾ÍÊÇ 0 ÁË,¶øÇÒ³¤¶È±ä³É 0
+    fat *fat1 =  (fat*) (v_addr0 + BLOCKSIZE);
     if (wstyle == 0) {
         openfilelist[fd].filePtr = 0;
         openfilelist[fd].length = 0;
     }
-        //1,è¦†ç›–å†™, å¦‚æœæ˜¯æ•°æ®æ–‡ä»¶,é‚£ä¹ˆè¦è€ƒè™‘åˆ é™¤æ–‡ä»¶æœ«å°¾çš„\0 æ‰èƒ½ç»§ç»­å¾€ä¸‹å†™
+        //1,¸²¸ÇĞ´, Èç¹ûÊÇÊı¾İÎÄ¼ş,ÄÇÃ´Òª¿¼ÂÇÉ¾³ıÎÄ¼şÄ©Î²µÄ\0 ²ÅÄÜ¼ÌĞøÍùÏÂĞ´
     else if (wstyle == 1) {
         if (openfilelist[fd].metadata == 1 && openfilelist[fd].length != 0) {
             openfilelist[fd].filePtr -= 1;
         }
     }
-        //2 è¿½åŠ å†™,å°±æŠŠæ¸¸æ ‡æŒ‡å‘æœ«å°¾
+        //2 ×·¼ÓĞ´,¾Í°ÑÓÎ±êÖ¸ÏòÄ©Î²
     else if (wstyle == 2) {
         if (openfilelist[fd].metadata == 0) {
             openfilelist[fd].filePtr = openfilelist[fd].length;
         }
-            //åŒç†,å¦‚æœæ˜¯æ•°æ®æ–‡ä»¶è¦åˆ é™¤æœ«å°¾çš„\0
+            //Í¬Àí,Èç¹ûÊÇÊı¾İÎÄ¼şÒªÉ¾³ıÄ©Î²µÄ\0
         else if (openfilelist[fd].metadata == 1 && openfilelist[fd].length != 0) {
             openfilelist[fd].filePtr = openfilelist[fd].length - 1;
         }
     }
     int off = openfilelist[fd].filePtr;
-    //å¦‚æœ off > BLOCKSIZE,ä¹Ÿå°±æ˜¯æ¸¸æ ‡ç°åœ¨æŒ‡å‘çš„ä¸æ˜¯æ–‡ä»¶ä¸­çš„ç¬¬ä¸€ä¸ªç›˜å—,é‚£ä¹ˆéœ€è¦æ‰¾åˆ°é‚£ä¸ªç›˜å—
-    //å¦å¤–,å¦‚æœæ¸¸æ ‡å¾ˆå¤§,ä½†æ˜¯åœ¨å¯»æ‰¾å¯¹åº”ç›˜å—çš„æ—¶å€™å‘ç°æ²¡æœ‰é‚£ä¸ªç›˜å—,é‚£ä¹ˆæŠŠç¼ºå°‘çš„ç›˜å—å…¨éƒ½è¡¥ä¸Š
+    //Èç¹û off > BLOCKSIZE,Ò²¾ÍÊÇÓÎ±êÏÖÔÚÖ¸ÏòµÄ²»ÊÇÎÄ¼şÖĞµÄµÚÒ»¸öÅÌ¿é,ÄÇÃ´ĞèÒªÕÒµ½ÄÇ¸öÅÌ¿é
+    //ÁíÍâ,Èç¹ûÓÎ±êºÜ´ó,µ«ÊÇÔÚÑ°ÕÒ¶ÔÓ¦ÅÌ¿éµÄÊ±ºò·¢ÏÖÃ»ÓĞÄÇ¸öÅÌ¿é,ÄÇÃ´°ÑÈ±ÉÙµÄÅÌ¿éÈ«¶¼²¹ÉÏ
     while (off >= BLOCKSIZE) {
         blockNum = fatPtr->id;
         if (blockNum == END) {
             blockNum = getFreeBLOCK();
             if (blockNum == END) {
-                printf("ç›˜å—ä¸è¶³\n");
+                printf("ÅÌ¿é²»×ã\n");
                 return -1;
             } else {
                 //update FAT
@@ -50,20 +50,20 @@ int do_write(int fd, char *text, int len, char wstyle) {
     unsigned char *buf = (unsigned char *) malloc(BLOCKSIZE *
                                                   sizeof(unsigned char));
     if (buf == NULL) {
-        printf("ç”³è¯·å†…å­˜ç©ºé—´å¤±è´¥!\n");
+        printf("ÉêÇëÄÚ´æ¿Õ¼äÊ§°Ü!\n");
         return -1;
     }
     fcb *dBlock = (fcb *) (v_addr0 + BLOCKSIZE * blockNum);
     fcb *dFcb = (fcb *) (text);
-    unsigned char *blockPtr = (unsigned char *) (v_addr0 + BLOCKSIZE * blockNum); //ç›˜å—æŒ‡é’ˆ
+    unsigned char *blockPtr = (unsigned char *) (v_addr0 + BLOCKSIZE * blockNum); //ÅÌ¿éÖ¸Õë
     int lenTmp = 0;
     char *textPtr = text;
     fcb *dFcbBuf = (fcb *) (buf);
-    //ç¬¬äºŒä¸ªå¾ªç¯,è¯»å–ç›˜å—å†…å®¹åˆ° buf, æŠŠ text å†…å®¹å†™å…¥ buf, ç„¶åå†ä» buf å†™å…¥åˆ°ç›˜å—
+    //µÚ¶ş¸öÑ­»·,¶ÁÈ¡ÅÌ¿éÄÚÈİµ½ buf, °Ñ text ÄÚÈİĞ´Èë buf, È»ºóÔÙ´Ó buf Ğ´Èëµ½ÅÌ¿é
     while (len > lenTmp) {
-        //ç›˜å—å†…å®¹è¯»å–åˆ° buf é‡Œ
+        //ÅÌ¿éÄÚÈİ¶ÁÈ¡µ½ buf Àï
         memcpy(buf, blockPtr, BLOCKSIZE);
-        //æŠŠ text å†…å®¹å†™åˆ° buf é‡Œé¢å»
+        //°Ñ text ÄÚÈİĞ´µ½ buf ÀïÃæÈ¥
         for (; off < BLOCKSIZE; off++) {
             *(buf + off) = *textPtr;
             textPtr++;
@@ -72,17 +72,17 @@ int do_write(int fd, char *text, int len, char wstyle) {
                 break;
             }
         }
-        //æŠŠ buf å†…å®¹å†™åˆ°ç›˜å—é‡Œé¢å»
+        //°Ñ buf ÄÚÈİĞ´µ½ÅÌ¿éÀïÃæÈ¥
         memcpy(blockPtr, buf, BLOCKSIZE);
-        //å¦‚æœ off==BLCOKSIZE,æ„å‘³ç€ buf å†™æ»¡äº†, å¦‚æœ len != lebTmp æ„å‘³ç€æ•°æ®è¿˜æ²¡å†™å®Œ, é‚£ä¹ˆå°±è¦çœ‹çœ‹è¿™ä¸ªæ–‡ä»¶è¿˜æœ‰æ²¡æœ‰å‰©ä½™ç›˜å—
-        //æ²¡æœ‰å‰©ä½™ç›˜å—,é‚£å°±è¦åˆ†é…æ–°çš„ç›˜å—äº†
+        //Èç¹û off==BLCOKSIZE,ÒâÎ¶×Å buf Ğ´ÂúÁË, Èç¹û len != lebTmp ÒâÎ¶×ÅÊı¾İ»¹Ã»Ğ´Íê, ÄÇÃ´¾ÍÒª¿´¿´Õâ¸öÎÄ¼ş»¹ÓĞÃ»ÓĞÊ£ÓàÅÌ¿é
+        //Ã»ÓĞÊ£ÓàÅÌ¿é,ÄÇ¾ÍÒª·ÖÅäĞÂµÄÅÌ¿éÁË
         if (off == BLOCKSIZE && len != lenTmp) {
             off = 0;
             blockNum = fatPtr->id;
             if (blockNum == END) {
                 blockNum = getFreeBLOCK();
                 if (blockNum == END) {
-                    printf("ç›˜å—ç”¨å®Œäº†!\n");
+                    printf("ÅÌ¿éÓÃÍêÁË!\n");
                     return -1;
                 } else {
                     blockPtr = (unsigned char *) (v_addr0 + BLOCKSIZE * blockNum);
@@ -98,14 +98,14 @@ int do_write(int fd, char *text, int len, char wstyle) {
         }
     }
     openfilelist[fd].filePtr += len;
-    //è‹¥è¯»å†™æŒ‡é’ˆå¤§äºåŸæ¥æ–‡ä»¶çš„é•¿åº¦ï¼Œåˆ™ä¿®æ”¹æ–‡ä»¶çš„é•¿åº¦
+    //Èô¶ÁĞ´Ö¸Õë´óÓÚÔ­À´ÎÄ¼şµÄ³¤¶È£¬ÔòĞŞ¸ÄÎÄ¼şµÄ³¤¶È
     if (openfilelist[fd].filePtr > openfilelist[fd].length)
         openfilelist[fd].length = openfilelist[fd].filePtr;
     free(buf);
-    //å¦‚æœåŸæ¥æ–‡ä»¶å å‡ ä¸ªç›˜å—,ç°åœ¨ä¿®æ”¹äº†æ–‡ä»¶,ç»“æœå ç”¨çš„ç›˜å—å˜å°‘äº†,é‚£å°±è¦æŠŠåé¢å ç”¨çš„ç›˜å—å…¨éƒ¨é‡Šæ”¾æ‰
+    //Èç¹ûÔ­À´ÎÄ¼şÕ¼¼¸¸öÅÌ¿é,ÏÖÔÚĞŞ¸ÄÁËÎÄ¼ş,½á¹ûÕ¼ÓÃµÄÅÌ¿é±äÉÙÁË,ÄÇ¾ÍÒª°ÑºóÃæÕ¼ÓÃµÄÅÌ¿éÈ«²¿ÊÍ·Åµô
     int i = blockNum;
     while (1) {
-        //å¦‚æœè¿™ä¸ª fat çš„ä¸‹ä¸€ä¸ª fat ä¸æ˜¯ end,é‚£ä¹ˆå°±æ˜¯é‡Šæ”¾æ‰å®ƒ,ä¸€è·¯é‡Šæ”¾ä¸‹å»
+        //Èç¹ûÕâ¸ö fat µÄÏÂÒ»¸ö fat ²»ÊÇ end,ÄÇÃ´¾ÍÊÇÊÍ·ÅµôËü,Ò»Â·ÊÍ·ÅÏÂÈ¥
         if (fat1[i].id != END) {
             int next = fat1[i].id;
             fat1[i].id = FREE;
@@ -114,7 +114,7 @@ int do_write(int fd, char *text, int len, char wstyle) {
             break;
         }
     }
-    //æŒ‰ç…§ä¸Šé¢è¿™ç§æ“ä½œ,ä¼šæŠŠæœ¬æ–‡ä»¶çš„æœ€åä¸€ä¸ªç›˜å—ä¹Ÿå˜æˆ free,è¿™é‡Œè¦æŠŠä»–é‡æ–°è®¾ç½®æˆ END
+    //°´ÕÕÉÏÃæÕâÖÖ²Ù×÷,»á°Ñ±¾ÎÄ¼şµÄ×îºóÒ»¸öÅÌ¿éÒ²±ä³É free,ÕâÀïÒª°ÑËûÖØĞÂÉèÖÃ³É END
     fat1[blockNum].id = END;
     //update fat2
     memcpy((fat *) (v_addr0 + BLOCKSIZE * 3), (fat *) (v_addr0 + BLOCKSIZE), 2 * BLOCKSIZE);
