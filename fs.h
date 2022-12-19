@@ -43,7 +43,7 @@ typedef struct USEROPEN {
     unsigned short date; //文件创建日期
     unsigned short first;
     //文件起始盘块号
-    int length;
+    unsigned long length;
     char dir[80];
     int count;
     //文件长度(字节数)
