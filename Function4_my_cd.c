@@ -1,11 +1,22 @@
 #include "fs.h"
 
+void delete_catalogue_name(char dir_str[80]) {
+    char tempStr[80];
+    strcpy(tempStr, dir_str);
+    int index = strlen(tempStr) - 2;
+    while (tempStr[index] != '\\') {
+        index--;
+    }
+    tempStr[index + 1] = '\0';
+    strcpy(dir_str, tempStr);
+}
+
 void my_cd(char *dirname) {
     //总结:
     // 1. 如果当前是目录文件下,那么需要把这个目录文件读取到 buf 里, 然后检索这个文件里的 fcb 有没有匹配 dirname 的目录项(而且必须是目录文件)
     // 如果有,那就在 openfilelist 里取一个打开文件表项,把这个dirname 这个目录文件的 fcb 写进去,然后切换 currfd=fd，这样就算是打开一个目录了
     if (openfilelist[currfd].metadata == 1) { //用户打开文件表的文件属性字段：1 表示数据文件，0 表示目录文件
-        printf("'%s' 不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n", dirname);
+        printf("'%s' not a dictionary\n", dirname);
         return;
     } else {//如果是目录文件
         //寻找目录文件里面有没有匹配的名字, 先把目录文件的信息读取到 buf 里
@@ -24,19 +35,24 @@ void my_cd(char *dirname) {
             }
         }
         if (flag == 0) { //创新点：如果没有找到匹配的目录文件，那么就提示用户
-            printf("该目录下没有 '%s' 文件或目录\n", dirname); // 创新点：提示用户没有找到匹配的目录文件并输出对应的名字
+            printf("no such file or dictionary: '%s'\n", dirname); // 创新点：提示用户没有找到匹配的目录文件并输出对应的名字
             return;
         }
         if (fcbPtr->exname[0] != 'd' || fcbPtr->exname[1] != 'i') { //不允许 cd 非目录文件
-            printf("'%s' 不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n", dirname);
+            printf("'%s' is a file\n", dirname);
             return;
         } else { //如果 cd 了一个目录文件, 那么判断是.还是..还是子文件,如果是子文件则打开这个目录文件到openfilelist里
             if (strcmp(fcbPtr->filename, ".") == 0) { //cd .不会有反应
                 return;
-            } else if (strcmp(fcbPtr->filename, "..") == 0) {//cd ..需要判断现在是不是根目录, 如果是根目录,不操作, 否则,返回上一层
-                if (currfd == 0) {
+            } else if (strcmp(fcbPtr->filename, "..") == 0) {//cd ..需要判断现在是不是根目录,
+                if (currfd == 0) {  // 如果是根目录,不操作, 否则,返回上一层
                     return;
                 } else {
+                    // 修改openfilelist[currfd].dir的把最后一个分目录去掉
+//                    for (i = currfd - 1; i >= 0; i--) {
+//                        delete_catalogue_name(openfilelist[i].dir);
+//                    }
+                    delete_catalogue_name(openfilelist[currfd - 1].dir);
                     currfd = my_close(currfd);
                     return;
                 }
