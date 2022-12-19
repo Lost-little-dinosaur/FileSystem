@@ -15,6 +15,7 @@ void my_cd(char *dirname) {
     //总结:
     // 1. 如果当前是目录文件下,那么需要把这个目录文件读取到 buf 里, 然后检索这个文件里的 fcb 有没有匹配 dirname 的目录项(而且必须是目录文件)
     // 如果有,那就在 openfilelist 里取一个打开文件表项,把这个dirname 这个目录文件的 fcb 写进去,然后切换 currfd=fd，这样就算是打开一个目录了
+    // openfilelist是一系列fcb的集合,currfd是当前打开的fcb的下标
     if (openfilelist[currfd].metadata == 1) { //用户打开文件表的文件属性字段：1 表示数据文件，0 表示目录文件
         printf("'%s' not a dictionary\n", dirname);
         return;
