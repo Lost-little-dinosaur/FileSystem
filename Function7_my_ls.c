@@ -10,17 +10,16 @@ void my_ls() {
     }
     char buf[MAX_TEXT_SIZE];
     openfilelist[currfd].filePtr = 0;
-    do_read(currfd, openfilelist[currfd].length, buf);
+    do_read(currfd, (int) openfilelist[currfd].length, buf);
     fcb *fcbPtr = (fcb *) buf;
     printf("name\tsize \ttype\t\tdate\t\ttime\n");
-    for (int i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb));
-         i++) {
+    for (int i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb)); i++) { //fcb大小为28
         if (fcbPtr->free == 1) {
             //目录文件
             //同理,年份占 7 位,月份占 4 位,日期占 5 位
             //小时占 5 位,分钟占 6 位,秒占 5 位
             if (fcbPtr->metadata == 0) {
-                printf("%s\t%dB\t<DIR>\t%d/%d/%d\t%02d:%02d:%02d\n",
+                printf("%s\t%luB\t<DIR>\t%d/%d/%d\t%02d:%02d:%02d\n",
                        fcbPtr->filename, fcbPtr->length,
                        (fcbPtr->date >> 9) + 2000,
                        (fcbPtr->date >> 5) & 0x000f,

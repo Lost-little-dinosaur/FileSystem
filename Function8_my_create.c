@@ -1,6 +1,6 @@
 #include "fs.h"
 
-int my_create(char *filename) {
+void my_create(char *filename) {
     // ① 为新文件分配一个空闲打开文件表项，如果没有空闲表项则返回-1，并显示错误信息；
     // ② 若新文件的父目录文件还没有打开，则调用 my_open()打开；若打开失败，则释放①中为新建文件分配的空闲文件打开表项，返回 - 1，并显示错误信息；
     // ③ 调用 do_read()读出该父目录文件内容到内存，检查该目录下新文件是否重名，若重名则释放①中分配的打开文件表项，并调用my_close()关闭②中打开的目录文件；然后返回 - 1，并显示错误信息；
@@ -14,42 +14,37 @@ int my_create(char *filename) {
     char *exname = strtok(NULL, ".");
     if (strcmp(fname, "") == 0) {
         printf("请输入文件名!\n");
-        return -1;
     }
     if (!exname) {
         printf("请输入后缀名!\n");
-        return -1;
     }
     if (openfilelist[currfd].metadata == 1) {
         printf("数据文件下不允许使用 create\n");
-        return -1;
     }
     //读取 currfd 对应的文件
     openfilelist[currfd].filePtr = 0;
     char buf[MAX_TEXT_SIZE];
-    do_read(currfd, openfilelist[currfd].length, buf);
+    do_read(currfd, (int) openfilelist[currfd].length, buf);
     int i;
     fcb *fcbPtr = (fcb *) (buf);
     //看看有没有重名文件
-    for (i = 0; i < (int)(openfilelist[currfd].length / sizeof(fcb));
-    i++, fcbPtr++){
+    for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb));
+         i++, fcbPtr++) {
         if (strcmp(fcbPtr->filename, filename) == 0 &&
             strcmp(fcbPtr->exname, exname) == 0) {
             printf("已有同名文件存在!\n");
-            return -1;
         }
     }
     //寻找空的 fcb 块
     fcbPtr = (fcb *) (buf);
     fcb *debug = (fcb *) (buf);
-    for (i = 0; i < (int)(openfilelist[currfd].length / sizeof(fcb));
-    i++, fcbPtr++){
+    for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb));
+         i++, fcbPtr++) {
         if (fcbPtr->free == 0)break;
     }
     //取一个盘块
     int blockNum = getFreeBLOCK();
     if (blockNum == -1) {
-        return -1;
     }
     fat *fat1 = (fat *) (v_addr0 + BLOCKSIZE);
     fat1[blockNum].id = END;

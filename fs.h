@@ -76,7 +76,7 @@ void my_cd(char *dirname); // 用于更改当前目录
 void my_mkdir(char *dirname); // 创建子目录
 void my_rmdir(char *dirname); // 删除子目录
 void my_ls(); // 显示目录中的内容
-int my_create(char *filename); // 创建文件
+void my_create(char *filename); // 创建文件
 void my_rm(char *filename); // 删除文件
 int my_open(char *filename); // 打开文件
 int my_close(int fd); // 关闭文件

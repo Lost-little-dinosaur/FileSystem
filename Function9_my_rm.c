@@ -20,24 +20,24 @@ void my_rm(char *filename) {
     //读取 currfd 对应的目录文件到 buf
     char buf[MAX_TEXT_SIZE];
     openfilelist[currfd].filePtr = 0;
-    do_read(currfd, openfilelist[currfd].length, buf);
+    do_read(currfd, (int) openfilelist[currfd].length, buf);
     int i;
     fcb *fcbPtr = (fcb *) buf;
     //寻找叫这个名字的文件目录项
-    for (i = 0; i < (int)(openfilelist[currfd].length / sizeof(fcb));
-    i++, fcbPtr++){
+    for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb));
+         i++, fcbPtr++) {
         if (strcmp(fcbPtr->filename, fname) == 0 && strcmp(fcbPtr->exname, exname) == 0) {
             break;
         }
     }
-    if (i == (int)(openfilelist[currfd].length / sizeof(fcb))){
+    if (i == (int) (openfilelist[currfd].length / sizeof(fcb))) {
         printf("没有这个文件\n");
         return;
     }
     //清空这个目录项占据的 FAT
     int blockNum = fcbPtr->first;
     fat *fat1 = (fat *) (v_addr0 + BLOCKSIZE);
-    int next = 0;
+    int next;
     while (1) {
         next = fat1[blockNum].id;
         fat1[blockNum].id = FREE;
@@ -64,15 +64,11 @@ void my_rm(char *filename) {
     do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
     openfilelist[currfd].length -= sizeof(fcb);
     //更新.目录项的长度
-    fcbPtr = (fcb *) buf;
-    fcbPtr->length = openfilelist[currfd].length;
-    openfilelist[currfd].filePtr = 0;
-    do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
-    openfilelist[currfd].length -= sizeof(fcb);
-    //更新.目录项的长度
-    fcbPtr = (fcb *) buf;
-    fcbPtr->length = openfilelist[currfd].length;
-    openfilelist[currfd].filePtr = 0;
-    do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
-    openfilelist[currfd].fcbstate = 1;
+//    fcbPtr = (fcb *) buf;
+//    fcbPtr->length = openfilelist[currfd].length;
+//    openfilelist[currfd].filePtr = 0;
+//    do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
+//    openfilelist[currfd].length -= sizeof(fcb);
 }
+//create 1.txt
+//rm 1.txt
