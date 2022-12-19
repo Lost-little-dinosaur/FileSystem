@@ -1,29 +1,29 @@
 #include "fs.h"
 
 void my_rm(char *filename) {
-    //Àı ÏÖÔÚÔÚ\a\Ä¿Â¼ÏÂ
-    //1. ¶ÁÈ¡µ±Ç°Ä¿Â¼µÄÄ¿Â¼ÎÄ¼ş(a)µ½ buf Àï(buf ÀïÊÇÒ»¸ö¸ö fcb)
-    //2. ÔÚ buf ÀïÑ°ÕÒÆ¥Åä filename µÄÊı¾İÎÄ¼ş
-    //3. Çå¿ÕÕâ¸öÎÄ¼şÕ¼¾İµÄÅÌ¿é(Ò²¾ÍÊÇÊÍ·ÅËüÕ¼¾İµÄ fat,²¢ÇÒ±¸·İ)
-    //4. ÔÚ¸¸Ä¿Â¼ÎÄ¼şÀï,É¾³ı filename ¶ÔÓ¦µÄ fcb (a ÀïÉ¾³ı b µÄ fcb)
-    //5. ¸üĞÂ¸¸Ä¿Â¼ÎÄ¼şµÄ³¤¶È(a µÄÄ¿Â¼ÎÄ¼ş³¤¶È)
+    //ä¾‹ ç°åœ¨åœ¨\a\ç›®å½•ä¸‹
+    //1. è¯»å–å½“å‰ç›®å½•çš„ç›®å½•æ–‡ä»¶(a)åˆ° buf é‡Œ(buf é‡Œæ˜¯ä¸€ä¸ªä¸ª fcb)
+    //2. åœ¨ buf é‡Œå¯»æ‰¾åŒ¹é… filename çš„æ•°æ®æ–‡ä»¶
+    //3. æ¸…ç©ºè¿™ä¸ªæ–‡ä»¶å æ®çš„ç›˜å—(ä¹Ÿå°±æ˜¯é‡Šæ”¾å®ƒå æ®çš„ fat,å¹¶ä¸”å¤‡ä»½)
+    //4. åœ¨çˆ¶ç›®å½•æ–‡ä»¶é‡Œ,åˆ é™¤ filename å¯¹åº”çš„ fcb (a é‡Œåˆ é™¤ b çš„ fcb)
+    //5. æ›´æ–°çˆ¶ç›®å½•æ–‡ä»¶çš„é•¿åº¦(a çš„ç›®å½•æ–‡ä»¶é•¿åº¦)
     char *fname = strtok(filename, ".");
     char *exname = strtok(NULL, ".");
     if (!exname) {
-        printf("ÇëÊäÈëºó×ºÃû!\n");
+        printf("è¯·è¾“å…¥åç¼€å!\n");
         return;
     }
     if (strcmp(exname, "di") == 0) {
-        printf("²»ÄÜÉ¾³ıÄ¿Â¼Ïî\n");
+        printf("ä¸èƒ½åˆ é™¤ç›®å½•é¡¹\n");
         return;
     }
-    //¶ÁÈ¡ currfd ¶ÔÓ¦µÄÄ¿Â¼ÎÄ¼şµ½ buf
+    //è¯»å– currfd å¯¹åº”çš„ç›®å½•æ–‡ä»¶åˆ° buf
     char buf[MAX_TEXT_SIZE];
     openfilelist[currfd].filePtr = 0;
     do_read(currfd, openfilelist[currfd].length, buf);
     int i;
     fcb *fcbPtr = (fcb *) buf;
-    //Ñ°ÕÒ½ĞÕâ¸öÃû×ÖµÄÎÄ¼şÄ¿Â¼Ïî
+    //å¯»æ‰¾å«è¿™ä¸ªåå­—çš„æ–‡ä»¶ç›®å½•é¡¹
     for (i = 0; i < (int)(openfilelist[currfd].length / sizeof(fcb));
     i++, fcbPtr++){
         if (strcmp(fcbPtr->filename, fname) == 0 && strcmp(fcbPtr->exname, exname) == 0) {
@@ -31,10 +31,10 @@ void my_rm(char *filename) {
         }
     }
     if (i == (int)(openfilelist[currfd].length / sizeof(fcb))){
-        printf("Ã»ÓĞÕâ¸öÎÄ¼ş\n");
+        printf("æ²¡æœ‰è¿™ä¸ªæ–‡ä»¶\n");
         return;
     }
-    //Çå¿ÕÕâ¸öÄ¿Â¼ÏîÕ¼¾İµÄ FAT
+    //æ¸…ç©ºè¿™ä¸ªç›®å½•é¡¹å æ®çš„ FAT
     int blockNum = fcbPtr->first;
     fat *fat1 = (fat *) (v_addr0 + BLOCKSIZE);
     int next = 0;
@@ -47,11 +47,11 @@ void my_rm(char *filename) {
             break;
         }
     }
-    //±¸·İ fat2
+    //å¤‡ä»½ fat2
     fat1 = (fat *) (v_addr0 + BLOCKSIZE);
     fat *fat2 = (fat *) (v_addr0 + BLOCKSIZE * 3);
     memcpy(fat2, fat1, sizeof(fat));
-    //ĞŞ¸ÄÕâ¸ö fcb Îª¿Õ
+    //ä¿®æ”¹è¿™ä¸ª fcb ä¸ºç©º
     fcbPtr->date = 0;
     fcbPtr->time = 0;
     fcbPtr->exname[0] = '\0';
@@ -59,17 +59,17 @@ void my_rm(char *filename) {
     fcbPtr->first = 0;
     fcbPtr->free = 0;
     fcbPtr->length = 0;
-    //Ğ´µ½´ÅÅÌÉÏÈ¥, ¸üĞÂ fcb ÄÚÈİÎª¿Õ
+    //å†™åˆ°ç£ç›˜ä¸Šå», æ›´æ–° fcb å†…å®¹ä¸ºç©º
     openfilelist[currfd].filePtr = i * sizeof(fcb);
     do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
     openfilelist[currfd].length -= sizeof(fcb);
-    //¸üĞÂ.Ä¿Â¼ÏîµÄ³¤¶È
+    //æ›´æ–°.ç›®å½•é¡¹çš„é•¿åº¦
     fcbPtr = (fcb *) buf;
     fcbPtr->length = openfilelist[currfd].length;
     openfilelist[currfd].filePtr = 0;
     do_write(currfd, (char *) fcbPtr, sizeof(fcb), 1);
     openfilelist[currfd].length -= sizeof(fcb);
-    //¸üĞÂ.Ä¿Â¼ÏîµÄ³¤¶È
+    //æ›´æ–°.ç›®å½•é¡¹çš„é•¿åº¦
     fcbPtr = (fcb *) buf;
     fcbPtr->length = openfilelist[currfd].length;
     openfilelist[currfd].filePtr = 0;

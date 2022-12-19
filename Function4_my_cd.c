@@ -5,24 +5,30 @@ void my_cd(char *dirname) {
     // 1. 如果当前是目录文件下,那么需要把这个目录文件读取到 buf 里, 然后检索这个文件里的 fcb 有没有匹配 dirname 的目录项(而且必须是目录文件)
     // 如果有,那就在 openfilelist 里取一个打开文件表项,把这个dirname 这个目录文件的 fcb 写进去,然后切换 currfd=fd，这样就算是打开一个目录了
     if (openfilelist[currfd].metadata == 1) { //用户打开文件表的文件属性字段：1 表示数据文件，0 表示目录文件
-        printf("该文件不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n");
+        printf("'%s' 不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n", dirname);
         return;
     } else {//如果是目录文件
         //寻找目录文件里面有没有匹配的名字, 先把目录文件的信息读取到 buf 里
         char *buf = (char *) malloc(MAXOPENFILE); //申请一个缓冲区，用来存放目录文件的内容，大小为 MAXOPENFILE
         openfilelist[currfd].filePtr = 0; //把文件指针指向文件开头
-        do_read(currfd, openfilelist[currfd].length, buf); //目录文件信息读到buf里
+        do_read(currfd, (int) openfilelist[currfd].length, buf); //目录文件信息读到buf里
         int i;
         fcb *fcbPtr = (fcb *) buf; //把 buf 里的内容强制转换成 fcb 类型
+        int flag = 0;
         for (i = 0; i < (int) (openfilelist[currfd].length / sizeof(fcb)); i++) { //遍历目录文件里的所有 fcb
             if (strcmp(fcbPtr->filename, dirname) == 0 && fcbPtr->metadata == 0) { //如果找到了匹配的目录文件
+                flag = 1;
                 break;
             } else {
                 fcbPtr++; //指向下一个 fcb,继续遍历
             }
         }
-        if (fcbPtr->exname[0]!='d' || fcbPtr->exname[1]!='i'){ //不允许 cd 非目录文件
-            printf("该文件不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n");
+        if (flag == 0) { //创新点：如果没有找到匹配的目录文件，那么就提示用户
+            printf("该目录下没有 '%s' 文件或目录\n", dirname); // 创新点：提示用户没有找到匹配的目录文件并输出对应的名字
+            return;
+        }
+        if (fcbPtr->exname[0] != 'd' || fcbPtr->exname[1] != 'i') { //不允许 cd 非目录文件
+            printf("'%s' 不是一个目录文件，而是一个数据文件，无法使用cd命令进入\n", dirname);
             return;
         } else { //如果 cd 了一个目录文件, 那么判断是.还是..还是子文件,如果是子文件则打开这个目录文件到openfilelist里
             if (strcmp(fcbPtr->filename, ".") == 0) { //cd .不会有反应

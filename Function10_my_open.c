@@ -2,21 +2,21 @@
 
 
 int my_open(char *filename) {
-    //°Ñµ±Ç°Ä¿Â¼ÎÄ¼ş¶ÁÈ¡µ½ buf Àï,buf ÀïÃæ¾ÍÊÇÒ»¸ö¸ö fcb ÁË,ÔÚÕâĞ© fcb ÀïÑ°ÕÒÆ¥ÅäÉÏfilename µÄÊı¾İÎÄ¼ş
-    //È»ºó´Ó openfilelist ÀïÈ¡³öÒ»¸ö´ò¿ªÎÄ¼ş±íÏî,°ÑÕâ¸öÊı¾İÎÄ¼şµÄĞÅÏ¢Ğ´½øÈ¥,ÇĞ»»currfd = fd¾ÍËãÊÇ´ò¿ªÎÄ¼şÁË
-    //°Ñµ±Ç°Ä¿Â¼ÎÄ¼ş¶ÁÈ¡µ½ buf Àï
+    //æŠŠå½“å‰ç›®å½•æ–‡ä»¶è¯»å–åˆ° buf é‡Œ,buf é‡Œé¢å°±æ˜¯ä¸€ä¸ªä¸ª fcb äº†,åœ¨è¿™äº› fcb é‡Œå¯»æ‰¾åŒ¹é…ä¸Šfilename çš„æ•°æ®æ–‡ä»¶
+    //ç„¶åä» openfilelist é‡Œå–å‡ºä¸€ä¸ªæ‰“å¼€æ–‡ä»¶è¡¨é¡¹,æŠŠè¿™ä¸ªæ•°æ®æ–‡ä»¶çš„ä¿¡æ¯å†™è¿›å»,åˆ‡æ¢currfd = fdå°±ç®—æ˜¯æ‰“å¼€æ–‡ä»¶äº†
+    //æŠŠå½“å‰ç›®å½•æ–‡ä»¶è¯»å–åˆ° buf é‡Œ
     char buf[MAX_TEXT_SIZE];
     openfilelist[currfd].filePtr = 0;
     do_read(currfd, openfilelist[currfd].length, buf);
     char *fname = strtok(filename, ".");
     char *exname = strtok(NULL, ".");
     if (!exname) {
-        printf("ÇëÊäÈëºó×ºÃû\n");
+        printf("è¯·è¾“å…¥åç¼€å\n");
         return -1;
     }
     int i;
     fcb *fcbPtr = (fcb *) buf;
-    //Ñ°ÕÒ´ËÎÄ¼ş
+    //å¯»æ‰¾æ­¤æ–‡ä»¶
     for (i = 0; i < (int)(openfilelist[currfd].length / sizeof(fcb));
     i++, fcbPtr++){
         if (strcmp(fcbPtr->filename, fname) == 0 &&
@@ -25,13 +25,13 @@ int my_open(char *filename) {
         }
     }
     if (i == (int)(openfilelist[currfd].length / sizeof(fcb))){
-        printf("²»´æÔÚ´ËÎÄ¼ş!\n");
+        printf("ä¸å­˜åœ¨æ­¤æ–‡ä»¶!\n");
         return -1;
     }
-    //ÎªËü´´½¨Ò»¸ö´ò¿ªÎÄ¼ş±íÏî
+    //ä¸ºå®ƒåˆ›å»ºä¸€ä¸ªæ‰“å¼€æ–‡ä»¶è¡¨é¡¹
     int fd = get_Free_Openfile();
     if (fd == -1) {
-        printf("ÓÃ»§´ò¿ªÎÄ¼ş±íÒÑ¾­ÓÃÂú\n");
+        printf("ç”¨æˆ·æ‰“å¼€æ–‡ä»¶è¡¨å·²ç»ç”¨æ»¡\n");
         return -1;
     }
     openfilelist[fd].metadata = 1;
