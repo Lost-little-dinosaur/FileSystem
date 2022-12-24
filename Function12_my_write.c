@@ -3,15 +3,15 @@
 
 int my_write(int fd) {
     if (fd > MAXOPENFILE || fd < 0) { //检查 fd 的有效性，如果无效则返回-1；
-        printf("此打开文件不存在\n");
+        printf("This open file does not exist\n");//此打开文件不存在
         return -1;
     }
     int wstyle;
     while (1) {
-        printf("输入: 0=截断写, 1=覆盖写, 2=追加写\n");
+        printf("Input: 0=truncate write, 1=overwrite write, 2=append write\n");//输入: 0=截断写, 1=覆盖写, 2=追加写
         scanf("%d", &wstyle);
         if (wstyle > 2 || wstyle < 0) {
-            printf("指令错误!\n");
+            printf("Command error!\n");//指令错误
         } else {
             break;
         }
@@ -20,7 +20,7 @@ int my_write(int fd) {
     char textTmp[MAX_TEXT_SIZE] = "\0";
     char Tmp[MAX_TEXT_SIZE] = "\0";
     char Tmp2[4] = "\0";
-    printf("请输入文件数据, 以 END 为文件结尾\n");
+    printf("Please enter file data, ending with END\n");//请输入文件数据, 以 END 为文件结尾
     getchar();
     while (fgets(Tmp, 100, stdin)) {
         for (int i = 0; i < strlen(Tmp) - 1; i++) {

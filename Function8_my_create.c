@@ -13,13 +13,13 @@ void my_create(char *filename) {
     char *fname = strtok(filename, ".");//分解字符串 filename 为一组字符串，"."为分隔符。
     char *exname = strtok(NULL, ".");
     if (strcmp(fname, "") == 0) {
-        printf("请输入文件名!\n");
+        printf("Please enter a file name!\n");//请输入文件名
     }
     if (!exname) {
-        printf("请输入后缀名!\n");
+        printf("Please enter the suffix name!\n");//请输入后缀名
     }
     if (openfilelist[currfd].metadata == 1) {
-        printf("数据文件下不允许使用 create\n");
+        printf("Create is not allowed under the data file\n");//数据文件下不允许使用 create
     }
     //读取 currfd 对应的文件
     openfilelist[currfd].filePtr = 0;
@@ -32,7 +32,7 @@ void my_create(char *filename) {
          i++, fcbPtr++) {
         if (strcmp(fcbPtr->filename, filename) == 0 &&
             strcmp(fcbPtr->exname, exname) == 0) {
-            printf("已有同名文件存在!\n");
+            printf("A file with the same name already exists!\n");//已有同名文件存在
         }
     }
     //寻找空的 fcb 块

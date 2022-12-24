@@ -14,8 +14,8 @@ int main() {
     int indexOfCmd;
     int length = 0;
     startsys();
-    printf("文件系统已开启.\n\n");
-    printf("输入 help 来显示帮助页面.\n\n");
+    printf("File system is turned on.\n\n");
+    printf("Type help to display the help page.\n\n");
     while (1) {
         printf("%s>", openfilelist[currfd].dir);
         fgets(temp, 100, stdin);
@@ -87,13 +87,13 @@ int main() {
                     if (openfilelist[currfd].metadata == 1)
                         my_close(currfd);
                     else
-                        printf("当前没有的打开的文件\n");
+                        printf("Currently no open files\n");//当前没有的打开的文件
                     break;
                 case 8: // write
                     if (openfilelist[currfd].metadata == 1)
                         my_write(currfd);
                     else
-                        printf("请先打开文件,然后再使用 write 操作\n");
+                        printf("Please open the file before using the write operation\n");//请先打开文件,然后再使用 write 操作
                     break;
                 case 9: // read
                     sp = strtok(NULL, " ");
@@ -107,11 +107,11 @@ int main() {
                     else if (openfilelist[currfd].metadata == 1)
                         my_read(currfd, length);
                     else
-                        printf("请先打开文件,然后再使用 read操作\n");
+                        printf("Please open the file before using the read operation\n");//请先打开文件,然后再使用 read操作
                     break;
                 case 10: // exit
                     my_exitsys();
-                    printf("退出文件系统.\n");
+                    printf("Exit file system.\n");//退出文件系统
                     return 0;
                     break;
                 case 11: // help
@@ -123,7 +123,7 @@ int main() {
                 case 13:
                     break;
                 default:
-                    printf("没有 %s 这个命令\n", sp);
+                    printf("没No %s command\n", sp);//没有 %s 这个命令
                     break;
             }
         } else

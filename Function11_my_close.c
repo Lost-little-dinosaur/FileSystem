@@ -2,13 +2,13 @@
 
 int my_close(int fd) {
     if (fd > MAXOPENFILE || fd < 0) { //检查 fd 的有效性，如果无效则返回-1；
-        printf("此打开文件不存在\n");
+        printf("This open file does not exist\n");//此打开文件不存在
         return -1;
     } else {
         //判断父目录文件是否存在, 不存在-1
         int fatherFd = find_father_dir(fd);
         if (fatherFd == -1) {
-            printf("父目录不存在");
+            printf("Parent directory does not exist");//父目录不存在
             return -1;
         }
         //检查fcbstate字段,如果是 1,则需要将该文件的FCB的内容保存到虚拟磁盘上该文件的目录项

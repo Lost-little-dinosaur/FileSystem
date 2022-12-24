@@ -10,11 +10,11 @@ void my_rm(char *filename) {
     char *fname = strtok(filename, ".");
     char *exname = strtok(NULL, ".");
     if (!exname) {
-        printf("请输入后缀名!\n");
+        printf("Please enter the suffix name!\n");//请输入后缀名
         return;
     }
     if (strcmp(exname, "di") == 0) {
-        printf("不能删除目录项\n");
+        printf("Cannot delete directory entry\n");//不能删除目录项
         return;
     }
     //读取 currfd 对应的目录文件到 buf
@@ -31,7 +31,7 @@ void my_rm(char *filename) {
         }
     }
     if (i == (int) (openfilelist[currfd].length / sizeof(fcb))) {
-        printf("没有这个文件\n");
+        printf("No such file\n");//没有这个文件
         return;
     }
     //清空这个目录项占据的 FAT

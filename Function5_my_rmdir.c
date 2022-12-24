@@ -12,11 +12,11 @@ void my_rmdir(char *dirname) {
     char *exname = strtok(NULL, ".");
     //不允许删除.和..这两个特殊目录文件
     if (strcmp(dirname, ".") == 0 || strcmp(dirname, "..") == 0) {
-        printf("不能删除%s这个特殊目录项\n", dirname);
+        printf("The special directory entry% s cannot be deleted\n", dirname);//不能删除%s这个特殊目录项
         return;
     }
     if (exname) {
-        printf("删除目录文件不用输入后缀名!\n");
+        printf("Delete directory file without entering suffix!\n");//删除目录文件不用输入后缀名
         return;
     }
     //读取 currfd 对应的目录文件到 buf
@@ -33,12 +33,12 @@ void my_rmdir(char *dirname) {
         }
     }
     if (i == (int) (openfilelist[currfd].length / sizeof(fcb))) {
-        printf("没有这个目录文件\n");
+        printf("No such directory file\n");//没有这个目录文件
         return;
     }
     //判断这个目录文件里,清空了没有,我们不允许删除没有清空的目录
     if (fcbPtr->length > 2 * sizeof(fcb)) {
-        printf("请先清空这个目录下的所有文件,再删除目录文件\n");
+        printf("Please clear all files in this directory before deleting directory files\n");//请先清空这个目录下的所有文件,再删除目录文件
         return;
     }
     //清空这个目录项占据的 FAT

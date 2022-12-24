@@ -14,7 +14,7 @@ void my_mkdir(char *dirname) {
     char *fname = strtok(dirname, ".");
     char *exname = strtok(NULL, ".");
     if (exname) {
-        printf("不允许输入后缀名!\n");
+        printf("Suffix name is not allowed!\n");//不允许输入后缀名
         return;
     }
     char text[MAX_TEXT_SIZE];
@@ -25,20 +25,20 @@ void my_mkdir(char *dirname) {
     for (int i = 0; i < (int) (fileLen / sizeof(fcb)); i++) {
         if (strcmp(dirname, fcbPtr[i].filename) == 0 && fcbPtr->metadata ==
                                                         0) {
-            printf("目录名已经存在!\n");
+            printf("Directory name already exists!\n");//目录名已经存在
             return;
         }
     }
     //在打开文件表里找一个空文件表项
     int fd = get_Free_Openfile();
     if (fd == -1) {
-        printf("打开文件表已全部被占用\n");
+        printf("All open file tables are occupied\n");//打开文件表已全部被占用
         return;
     }
     //在 FAT 里找一个空盘块
     unsigned short int blockNum = getFreeBLOCK();
     if (blockNum == END) {
-        printf("盘块已经用完\n");
+        printf("The disk has been used up\n");//盘块已经用完
         openfilelist[fd].topenfile = 0;
         return;
     }

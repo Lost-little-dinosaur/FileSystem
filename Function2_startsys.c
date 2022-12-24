@@ -12,23 +12,23 @@ void startsys() {
     // ⑤ 在屏幕上显示“myfsys 文件系统不存在，现在开始创建文件系统”信息，并调用 my_format()对①中申请到的虚拟磁盘空间进行格式化操作。转⑥；
     v_addr0 = (unsigned char *) malloc(SIZE); //申请虚拟磁盘空间
     //如果文件不存在或者开头不是文件魔数,都重新创建文件
-    printf("开始读取文件...");
+    printf("Start reading file");//开始读取文件...
     FILE *file;
     if ((file = fopen(FILENAME, "r")) != NULL) {
         fread(buffer, SIZE, 1, file); //将二进制文件读取到缓冲区
         fclose(file);
         if (memcmp(buffer, "10101010", 8) == 0) {
             memcpy(v_addr0, buffer, SIZE);
-            printf("myfsys 读取成功!\n");
+            printf("Myfsys read successfully!\n");//myfsys 读取成功
         }
             //有文件但是开头不是文件魔数
         else {
-            printf("myfsys 文件系统不存在，现在开始创建文件系统\n");
+            printf("The myfsys file system does not exist. Now start to create the file system\n");//myfsys 文件系统不存在，现在开始创建文件系统
             my_format();
             memcpy(buffer, v_addr0, SIZE);
         }
     } else {
-        printf("myfsys 文件系统不存在，现在开始创建文件系统\n");
+        printf("The myfsys file system does not exist. Now start to create the file system\n");//myfsys 文件系统不存在，现在开始创建文件系统
         my_format();
         memcpy(buffer, v_addr0, SIZE);
     }
