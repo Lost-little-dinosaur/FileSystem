@@ -50,7 +50,7 @@ int do_write(int fd, char *text, int len, char wstyle) {
     unsigned char *buf = (unsigned char *) malloc(BLOCKSIZE *
                                                   sizeof(unsigned char));
     if (buf == NULL) {
-        printf("申请内存空间失败!\n");
+        printf("Failed to request memory space!\n");//申请内存空间失败!
         return -1;
     }
     fcb *dBlock = (fcb *) (v_addr0 + BLOCKSIZE * blockNum);
@@ -82,7 +82,7 @@ int do_write(int fd, char *text, int len, char wstyle) {
             if (blockNum == END) {
                 blockNum = getFreeBLOCK();
                 if (blockNum == END) {
-                    printf("盘块用完了!\n");
+                    printf("Disk is used up!\n");//盘块用完了
                     return -1;
                 } else {
                     blockPtr = (unsigned char *) (v_addr0 + BLOCKSIZE * blockNum);

@@ -5,7 +5,7 @@ void my_ls() {
     // ② 将读出的目录文件的信息按照一定的格式显示到屏幕上；
     // ③ 返回。
     if (openfilelist[currfd].metadata == 1) {
-        printf("在数据文件里不能使用 ls\n");
+        printf("Ls cannot be used in data files\n");//在数据文件里不能使用 ls
         return;
     }
     char buf[MAX_TEXT_SIZE];

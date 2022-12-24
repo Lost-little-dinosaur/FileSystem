@@ -15,7 +15,7 @@ int do_read(int fd, int len, char *text) {
     int lenTmp = len;
     unsigned char *buf = (unsigned char *) malloc(1024);
     if (buf == NULL) {
-        printf("do_read 申请内存空间失败\n");
+        printf("do_ Read failed to request memory space\n");//do_read 申请内存空间失败
         return -1;
     }
     int off = openfilelist[fd].filePtr;
@@ -27,7 +27,7 @@ int do_read(int fd, int len, char *text) {
         off -= BLOCKSIZE;
         blockNum = fatPtr->id;
         if (blockNum == END) {
-            printf("do_read 寻找的块不存在\n");
+            printf("do_ The block searched by read does not exist\n");//do_read 寻找的块不存在
             return -1;
         }
         fatPtr = (fat * )(v_addr0 + BLOCKSIZE) + blockNum;
@@ -53,7 +53,7 @@ int do_read(int fd, int len, char *text) {
             //寻找下一个块
             blockNum = fatPtr->id;
             if (blockNum == END) {
-                printf("len 长度过长! 超出了文件大小!\n");
+                printf("LEN is too long! File size exceeded!\n");//len 长度过长! 超出了文件大小
                 break;
             }
             fatPtr = (fat * )(v_addr0 + BLOCKSIZE) + blockNum;

@@ -22,7 +22,8 @@ void my_format() {
     //引导块信息
     block0 *guideBlock = (block0 *) v_addr0;
     strcpy(guideBlock->magic_number, "10101010"); //魔数（magic number）是指一个特殊的数字，它用来标识文件的类型或格式。在文件系统中，魔数通常被用来识别文件系统的类型。
-    strcpy(guideBlock->information, "文件系统,外存分配方式:FAT,磁盘空间管理:结合于FAT 的位示图,目录结构:单用户多级目录结构.");
+    strcpy(guideBlock->information, "File system, external storage allocation mode: FAT, disk space management: bit diagram combined with FAT, directory structure: single user multi-level directory structure.");
+    //文件系统,外存分配方式:FAT,磁盘空间管理:结合于FAT 的位示图,目录结构:单用户多级目录结构
     guideBlock->root = 5;
     guideBlock->startBlock = v_addr0 + BLOCKSIZE * 5;
     //设置两个 FAT 表信息

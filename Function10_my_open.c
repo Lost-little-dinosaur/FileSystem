@@ -11,7 +11,7 @@ int my_open(char *filename) {
     char *fname = strtok(filename, ".");
     char *exname = strtok(NULL, ".");
     if (!exname) {
-        printf("请输入后缀名\n");
+        printf("Please enter the suffix name\n");//请输入后缀名
         return -1;
     }
     int i;
@@ -25,13 +25,13 @@ int my_open(char *filename) {
         }
     }
     if (i == (int)(openfilelist[currfd].length / sizeof(fcb))){
-        printf("不存在此文件!\n");
+        printf("This file does not exist!\n");//不存在此文件
         return -1;
     }
     //为它创建一个打开文件表项
     int fd = get_Free_Openfile();
     if (fd == -1) {
-        printf("用户打开文件表已经用满\n");
+        printf("User opened file table is full\n");//用户打开文件表已经用满
         return -1;
     }
     openfilelist[fd].metadata = 1;
