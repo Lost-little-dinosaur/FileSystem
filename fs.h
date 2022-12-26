@@ -85,6 +85,7 @@ int do_write(int fd, char *text, int len, char wstyle);// 实际写文件
 int my_read(int fd, int len); // 读文件
 int do_read(int fd, int len, char *text); // 实际读文件
 void my_exitsys(); // 退出文件系统
+void my_tips(char *sp); //提示
 unsigned short getFreeBLOCK(); // 获取一个空闲的磁盘块
 int get_Free_Openfile(); // 获取一个空闲的文件打开表项
 int find_father_dir(int fd); // 寻找一个打开文件的父目录打开文件

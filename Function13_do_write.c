@@ -35,7 +35,7 @@ int do_write(int fd, char *text, int len, char wstyle) {
         if (blockNum == END) {
             blockNum = getFreeBLOCK();
             if (blockNum == END) {
-                printf("ÅÌ¿é²»×ã\n");
+                printf("Insufficient disk\n");
                 return -1;
             } else {
                 //update FAT

@@ -57,9 +57,29 @@ int main() {
                     break;
                 case 3: // cd
                     sp = strtok(NULL, " ");
-                    if (sp != NULL)
-                        my_cd(sp);
-                    else
+                    if (sp != NULL) {
+                        // 判断sp中是否有’/‘
+                        len = strchr(sp, '/');
+                        if (len != NULL) { // 有’/‘，则按照’/‘分割
+                            char *p = strtok(sp, "/");
+                            while (p != NULL) {
+                                my_cd(p);
+                                p = strtok(NULL, "/");
+                            }
+                        } else { // 没有’/‘，直接cd
+                            // 如果sp其中有\t，则进入my_tips()函数
+                            if (strchr(sp, '\t') != NULL) {
+                                my_tips(sp);
+                                continue;
+                            }
+                            my_cd(sp);
+                        }
+                        // mkdir k
+                        // cd k
+                        // mkdir kk
+                        // cd ..
+                        // cd k/kk
+                    } else
                         error("cd");
                     break;
                 case 4: // create
@@ -123,7 +143,7 @@ int main() {
                 case 13:
                     break;
                 default:
-                    printf("没No %s command\n", sp);//没有 %s 这个命令
+                    printf("%s: command not found\n", sp);//没有 %s 这个命令
                     break;
             }
         } else
